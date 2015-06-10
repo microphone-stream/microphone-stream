@@ -1,0 +1,23 @@
+{
+  "name": "microphone-stream",
+  "version": "1.0.0",
+  "description": "A stream of raw audio data from the microphone",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saebekassebil/microphone-stream.git"
+  },
+  "keywords": [
+    "webrtc",
+    "audio",
+    "microphone",
+    "stream",
+    "record"
+  ],
+  "author": "Jakob Miland <saebekassebil@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saebekassebil/microphone-stream/issues"
+  },
+  "homepage": "https://github.com/saebekassebil/microphone-stream#readme"
+}
