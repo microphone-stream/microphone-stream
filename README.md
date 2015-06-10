@@ -6,6 +6,8 @@ what you're looking for!
 Exposes an object stream, containing sound data (raw PCM) for as many
 channels you want (mono, stereo, quad, etc) and nothing more!
 
+**Very alpha-beta-gamma - Needs some fletching-out of details**
+
 ```js
 var getUserMedia = require('getusermedia');
 var through2 = require('through2');
