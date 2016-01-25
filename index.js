@@ -29,7 +29,7 @@ function MicrophoneStream(stream, opts) {
     }
   }
 
-  var context = this.audioContext = new AudioContext();
+  var context = new AudioContext();
   var audioInput = context.createMediaStreamSource(stream);
   var recorder = context.createScriptProcessor(bufferSize, inputChannels, outputChannels);
 
@@ -44,6 +44,16 @@ function MicrophoneStream(stream, opts) {
     recording = false;
     self.push(null);
   };
+
+  process.nextTick(function() {
+    self.emit('format', {
+      channels: 1,
+      bitDepth: 32,
+      sampleRate: context.sampleRate,
+      signed: true,
+      float: true
+    });
+  })
 }
 util.inherits(MicrophoneStream, Readable);
 
