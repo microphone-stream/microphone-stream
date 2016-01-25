@@ -2,7 +2,7 @@
 // Generated on Fri Jan 15 2016 13:36:31 GMT-0500 (EST)
 
 module.exports = function(config) {
-  config.set({
+  var cfg = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -27,7 +27,7 @@ module.exports = function(config) {
 
     browserify: {
       debug: true,
-      transform: ['brfs']
+      transform: []
     },
 
     // test results reporter to use
@@ -58,6 +58,10 @@ module.exports = function(config) {
       ChromeWithPrerecordedMic: {
         base: 'Chrome',
         flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=test/resources/audio.wav']
+      },
+      ChromeTravisCI: {
+        base: 'Chrome',
+        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=test/resources/audio.wav', '--no-sandbox']
       }
     },
 
@@ -68,5 +72,11 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    cfg.browsers = ['ChromeTravisCI'];
+  }
+
+  config.set(cfg);
 };
