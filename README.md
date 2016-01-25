@@ -1,4 +1,4 @@
-# microphone-stream
+# Node-style stream for getUserMedia
 
 If you just want to get some audio through from your microphone, this is
 what you're looking for!
@@ -6,7 +6,7 @@ what you're looking for!
 Converts a [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) (from [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia)) into a standard Node.js-style stream for easy `pipe()`ing.
 
 Note: this module is intended for use in browsers (presumably with with [browserify](http://browserify.org/)), 
-it does not work in Node.js
+it does not work in Node.js.
 Additionally, this only works in a limited set of browsers, see http://caniuse.com/#search=getusermedia for details.
 
 
@@ -51,7 +51,7 @@ getUserMedia({ video: false, audio: true }, function(err, stream) {
 });
 ```
 
-## `micstream(stream, opts) -> Readable Stream`
+## `new MicrophoneStream(stream, opts) -> Readable Stream`
 
 Where `opts` is an option object, with defaults like this:
 ```js
@@ -63,4 +63,7 @@ Where `opts` is an option object, with defaults like this:
 "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
 to balance between latency and audio quality."
 https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+
+## `MicrophoneStream.toRaw(Buffer) -> Float32Array`
   
+Converts it back to the original Float32Array DataView. (The underlying audio data is not copied or modified.)
