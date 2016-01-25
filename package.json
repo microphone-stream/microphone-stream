@@ -17,6 +17,10 @@
     "record"
   ],
   "author": "Jakob Miland <saebekassebil@gmail.com>",
+  "contributors": [{
+    "name": "Nathan Friedly",
+    "url": "http://nfriedly.com"
+  }],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/saebekassebil/microphone-stream/issues"
