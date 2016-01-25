@@ -2,7 +2,7 @@
 var Readable = require('stream').Readable;
 var util = require('util');
 
-var micstream = module.exports = function micstream(stream, opts) {
+function MicrophoneStream(stream, opts) {
   // "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good
   // buffer size to balance between latency and audio quality."
   // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
@@ -12,10 +12,10 @@ var micstream = module.exports = function micstream(stream, opts) {
 
   bufferSize = opts.bufferSize || bufferSize;
 
-    // We can only emit one channel's worth of audio, so only one input. (Who has multiple microphones anyways?)
-  var inputChannels = 1,
-    // And we're not sending any audio back to the WebAudio API, so don't make it set aside resources for that.
-    outputChannels = 0;
+  // We can only emit one channel's worth of audio, so only one input. (Who has multiple microphones anyways?)
+  var inputChannels = 1;
+  // we shouldn't need any output channels (going back to the browser), but chrome is buggy and won't give us any audio without one
+  var outputChannels = 1;
 
   Readable.call(this, opts);
 
@@ -36,6 +36,7 @@ var micstream = module.exports = function micstream(stream, opts) {
   recorder.onaudioprocess = recorderProcess;
 
   audioInput.connect(recorder);
+  recorder.connect(context.destination); // other half of workaround for chrome bugs
 
   this.stop = function() {
     stream.getTracks()[0].stop();
@@ -44,9 +45,11 @@ var micstream = module.exports = function micstream(stream, opts) {
     self.push(null);
   };
 }
-util.inherits(micstream, Readable);
+util.inherits(MicrophoneStream, Readable);
 
-micstream.prototype._read = function(/* bytes */) {
+MicrophoneStream.prototype._read = function(/* bytes */) {
   // no-op, (flow-control doesn't really work on sound)
 };
 
+
+module.exports = MicrophoneStream;
