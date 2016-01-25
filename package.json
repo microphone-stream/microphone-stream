@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/saebekassebil/microphone-stream/issues"
   },
-  "homepage": "https://github.com/saebekassebil/microphone-stream#readme"
+  "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
+  "dependencies": {
+    "through2": "^2.0.0"
+  }
 }
