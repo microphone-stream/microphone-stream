@@ -3,7 +3,7 @@
 var assert = require('assert');
 
 var getUserMedia = require('getUserMedia');
-var MicrophoneStream = require('../index.js');
+var MicrophoneStream = require('../microphone-stream.js');
 
 //var expect = require('expect.js');
 
