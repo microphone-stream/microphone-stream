@@ -38,20 +38,18 @@ getUserMedia({ video: false, audio: true }, function(err, stream) {
   // It also emits a format event with various details (frequency, channels, etc)
   micStream.on('format', function(format) {
     console.log(format);
-    /* Example:
-    {
-      channels: 1,
-      bitDepth: 32,
-      sampleRate: 48000,
-      signed: true,
-      float: true
-    }
-    */
   });
+  
+  // Stop when ready
+  document.getElementById('my-stop-button').onclick = function() {
+    micStream.stop();
+  };
 });
 ```
 
-## `new MicrophoneStream(stream, opts) -> Readable Stream`
+## `API`
+
+### `new MicrophoneStream(stream, opts)` -> [Readable Stream](https://nodejs.org/api/stream.html)
 
 Where `opts` is an option object, with defaults like this:
 ```js
@@ -64,6 +62,29 @@ Where `opts` is an option object, with defaults like this:
 to balance between latency and audio quality."
 https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
 
+#### `.stop()` 
+
+Stops the recording. 
+Note: firefox currently leaves the recording icon in place after recording has stopped.
+
+#### Event: `raw`
+
+Emits the initial `Float32Array` of data every time more data is recieved from the mic.
+
+#### Event: `format`
+
+One-time event with details of the audio format. Example:
+
+```js
+{
+  channels: 1,
+  bitDepth: 32,
+  sampleRate: 48000,
+  signed: true,
+  float: true
+}
+```
+
 ## `MicrophoneStream.toRaw(Buffer) -> Float32Array`
   
-Converts it back to the original Float32Array DataView. (The underlying audio data is not copied or modified.)
+Converts a `Buffer` (from a `data` evnt or from calling `.read()`) back to the original Float32Array DataView format. (The underlying audio data is not copied or modified.)
