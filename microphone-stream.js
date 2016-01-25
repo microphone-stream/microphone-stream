@@ -80,6 +80,7 @@ function MicrophoneStream(stream, opts) {
     recorder.disconnect(0);
     recording = false;
     self.push(null);
+    self.emit('close');
   };
 
   process.nextTick(function() {
