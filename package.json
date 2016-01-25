@@ -7,6 +7,10 @@
     "type": "git",
     "url": "git+https://github.com/saebekassebil/microphone-stream.git"
   },
+  "scripts": {
+    "lint": "eslint *.js",
+    "test": "npm run lint"
+  },
   "keywords": [
     "webrtc",
     "getUserMedia",
@@ -17,10 +21,12 @@
     "record"
   ],
   "author": "Jakob Miland <saebekassebil@gmail.com>",
-  "contributors": [{
-    "name": "Nathan Friedly",
-    "url": "http://nfriedly.com"
-  }],
+  "contributors": [
+    {
+      "name": "Nathan Friedly",
+      "url": "http://nfriedly.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/saebekassebil/microphone-stream/issues"
@@ -28,5 +34,9 @@
   "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
   "dependencies": {
     "through2": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-config-google": "^0.3.0"
   }
 }

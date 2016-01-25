@@ -2,6 +2,16 @@
 var Readable = require('stream').Readable;
 var util = require('util');
 
+/**
+ * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and converts the audio to Buffers
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
+ *
+ * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
+ * @param {Object} [opts] options
+ * @param {Number|null} [opts.bufferSize=null] https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+ * @constructor
+ */
 function MicrophoneStream(stream, opts) {
   // "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good
   // buffer size to balance between latency and audio quality."
@@ -14,6 +24,7 @@ function MicrophoneStream(stream, opts) {
 
   // We can only emit one channel's worth of audio, so only one input. (Who has multiple microphones anyways?)
   var inputChannels = 1;
+
   // we shouldn't need any output channels (going back to the browser), but chrome is buggy and won't give us any audio without one
   var outputChannels = 1;
 
@@ -21,10 +32,20 @@ function MicrophoneStream(stream, opts) {
 
   var self = this;
   var recording = true;
+
+  /**
+   * Convert and emit the raw audio data
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode/onaudioprocess
+   * @param {AudioProcessingEvent} e https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent
+   */
   function recorderProcess(e) {
-    if (recording) { // onaudioprocess can be called at least once after we've stopped
-      var raw = e.inputBuffer.getChannelData(0); // Float32Array, each sample is a number from -1 to 1
-      var nodebuffer = new Buffer(raw.buffer); // node only accepts buffers or strings for streams, buffers are essentially a Uint8Array
+    // onaudioprocess can be called at least once after we've stopped
+    if (recording) {
+      // Float32Array, each sample is a number from -1 to 1
+      var raw = e.inputBuffer.getChannelData(0);
+
+      // node only accepts buffers or strings for streams; buffers are essentially a Uint8Array
+      var nodebuffer = new Buffer(raw.buffer);
       self.push(nodebuffer);
     }
   }
@@ -36,7 +57,9 @@ function MicrophoneStream(stream, opts) {
   recorder.onaudioprocess = recorderProcess;
 
   audioInput.connect(recorder);
-  recorder.connect(context.destination); // other half of workaround for chrome bugs
+
+  // other half of workaround for chrome bugs
+  recorder.connect(context.destination);
 
   this.stop = function() {
     stream.getTracks()[0].stop();
@@ -53,13 +76,12 @@ function MicrophoneStream(stream, opts) {
       signed: true,
       float: true
     });
-  })
+  });
 }
 util.inherits(MicrophoneStream, Readable);
 
 MicrophoneStream.prototype._read = function(/* bytes */) {
   // no-op, (flow-control doesn't really work on sound)
 };
-
 
 module.exports = MicrophoneStream;
