@@ -36,7 +36,7 @@
   "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
   "dependencies": {},
   "devDependencies": {
-    "brfs": "^1.4.3",
+    "browserify": "^13.0.0",
     "eslint": "^1.10.3",
     "eslint-config-google": "^0.3.0",
     "getusermedia": "^1.3.5",
