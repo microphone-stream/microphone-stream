@@ -41,11 +41,25 @@ function MicrophoneStream(stream, opts) {
   function recorderProcess(e) {
     // onaudioprocess can be called at least once after we've stopped
     if (recording) {
-      // Float32Array, each sample is a number from -1 to 1
       var raw = e.inputBuffer.getChannelData(0);
 
-      // node only accepts buffers or strings for streams; buffers are essentially a Uint8Array
+      /**
+       * @event MicrophoneStream#raw
+       * @param {Float32Array} data raw audio data from browser - each sample is a number from -1 to 1
+       */
+      self.emit('raw', raw);
+
+      // Standard (non-object mode) Node.js streams only accepts Buffers or Strings
       var nodebuffer = new Buffer(raw.buffer);
+
+      /**
+       * Emit the readable/data event with a node-style buffer.
+       * Note: this is essentially a new DataView on the same underlying ArrayBuffer.
+       * The raw audio data is not actually coppied or changed.
+       *
+       * @event MicrophoneStream#data
+       * @param {Buffer} chunk node-style buffer with audio data; buffers are essentially a Uint8Array
+       */
       self.push(nodebuffer);
     }
   }
@@ -82,6 +96,18 @@ util.inherits(MicrophoneStream, Readable);
 
 MicrophoneStream.prototype._read = function(/* bytes */) {
   // no-op, (flow-control doesn't really work on sound)
+};
+
+/**
+ * Converts a Buffer back into the raw Float32Array format that browsers use.
+ * Note: this is just a new DataView for the same underlying buffer -
+ * the actual audio data is not copied or changed here.
+ *
+ * @param {Buffer} chunk node-style buffer of audio data from a 'data' event or read() call
+ * @return {Float32Array} raw 32-bit float data view of audio data
+ */
+MicrophoneStream.toRaw = function toFloat32(chunk) {
+  return new Float32Array(chunk.buffer);
 };
 
 module.exports = MicrophoneStream;
