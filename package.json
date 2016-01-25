@@ -1,7 +1,7 @@
 {
   "name": "microphone-stream",
   "version": "1.0.1",
-  "description": "A stream of raw audio data from the microphone",
+  "description": "A stream of raw audio data from the microphone for use in browsers with getUserMedia",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -9,6 +9,8 @@
   },
   "keywords": [
     "webrtc",
+    "getUserMedia",
+    "WebAudio",
     "audio",
     "microphone",
     "stream",
