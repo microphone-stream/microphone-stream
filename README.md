@@ -1,5 +1,7 @@
 # Node-style stream for getUserMedia
 
+[![Build Status](https://travis-ci.org/saebekassebil/microphone-stream.svg?branch=master)](https://travis-ci.org/saebekassebil/microphone-stream)
+
 If you just want to get some audio through from your microphone, this is
 what you're looking for!
 
