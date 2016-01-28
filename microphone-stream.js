@@ -76,7 +76,11 @@ function MicrophoneStream(stream, opts) {
   recorder.connect(context.destination);
 
   this.stop = function() {
-    stream.getTracks()[0].stop();
+    try {
+      stream.getTracks()[0].stop();
+    } catch (ex) {
+      // This fails in some older versions of chrome. Nothing we can do about it.
+    }
     recorder.disconnect(0);
     recording = false;
     self.push(null);
