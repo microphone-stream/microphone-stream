@@ -21,17 +21,14 @@ var MicrophoneStream = require('microphone-stream');
 getUserMedia({ video: false, audio: true }, function(err, stream) {
   var micStream = new MicrophoneStream(stream);
   
-  // get raw audio (Float32Array, all values are between 1 and -1)
-  micStream.on('raw', function(data) {
-    //...
-  });
-  
   // get Buffers (Essentially a Uint8Array DataView of the same Float32 values)
   micStream.on('data', function(chunk) {
     // Optionally convert the Buffer back into a Float32Array
     // (This actually just creates a new DataView - the underlying audio data is not copied or modified.)
     var raw = MicrophoneStream.toRaw(chunk) 
     //...
+    
+    // note: if you set options.objectMode=true, the `data` event will output AudioBuffers instead of Buffers
    });
   
   // or pipe it to another stream
@@ -53,25 +50,28 @@ getUserMedia({ video: false, audio: true }, function(err, stream) {
 
 ### `new MicrophoneStream(stream, opts)` -> [Readable Stream](https://nodejs.org/api/stream.html)
 
-Where `opts` is an option object, with defaults like this:
+Where `opts` is an option object, with defaults:
 ```js
 {
-  bufferSize: null, // Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384
+  objectMode: false, // 
+  bufferSize: null // 
 }
 ```
 
-"It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
-to balance between latency and audio quality."
-https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+* **bufferSize**: Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384. According to [Mozilla's Docs](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor)
+ "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
+  to balance between latency and audio quality."
+  
+* **objectMode**: if true, stream enters [objectMode] and emits AudioBuffers instead of Buffers. This has implications for `pipe()`'ing to other streams.
 
 #### `.stop()` 
 
 Stops the recording. 
 Note: firefox currently leaves the recording icon in place after recording has stopped.
 
-#### Event: `raw`
+#### Event: `data`
 
-Emits the initial `Float32Array` of data every time more data is recieved from the mic.
+Emits either a [Buffer] with raw 32-bit Floating point audio data, or if [objectMode] is set, an [AudioBuffer] containing the data + some metadata.
 
 #### Event: `format`
 
@@ -89,4 +89,8 @@ One-time event with details of the audio format. Example:
 
 ## `MicrophoneStream.toRaw(Buffer) -> Float32Array`
   
-Converts a `Buffer` (from a `data` evnt or from calling `.read()`) back to the original Float32Array DataView format. (The underlying audio data is not copied or modified.)
+Converts a `Buffer` (from a `data` event or from calling `.read()`) back to the original Float32Array DataView format. (The underlying audio data is not copied or modified.)
+
+[AudioBuffer]: https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+[Buffer]: https://nodejs.org/api/buffer.html
+[objectMode]: https://nodejs.org/api/stream.html#stream_object_mode

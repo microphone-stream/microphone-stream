@@ -11,7 +11,7 @@ var MicrophoneStream = require('../microphone-stream.js');
 
 describe("MicrophoneStream", function() {
 
-  it("should capture audio and emit data events with buffers", function(done) {
+  it("should capture audio and emit data events with buffers when in the default binary mode", function(done) {
     getUserMedia(function(err, stream) {
       if (err) {
         return done(err);
@@ -26,16 +26,16 @@ describe("MicrophoneStream", function() {
     });
   });
 
-  it("should capture audio and emit raw events with Float32Arrays", function(done) {
+  it("should capture audio and emit AudioBuffers when in object mode", function(done) {
     getUserMedia(function(err, stream) {
       if (err) {
         return done(err);
       }
 
-      var micStream = new MicrophoneStream(stream);
+      var micStream = new MicrophoneStream(stream, {objectMode: true});
       micStream.on('error', done)
-        .on('raw', function(data) {
-          assert(data instanceof Float32Array);
+        .on('data', function(data) {
+          assert(data instanceof AudioBuffer);
           done();
         });
     });
