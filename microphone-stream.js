@@ -3,12 +3,13 @@ var Readable = require('stream').Readable;
 var util = require('util');
 
 /**
- * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and converts the audio to Buffers
+ * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and optionally converts the audio to Buffers
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
  *
  * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
  * @param {Object} [opts] options
+ * @param {Boolean} [opts.objectMode=false] Puts the stream into ObjectMode where it emits AudioBuffers instead of Buffers - see https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
  * @param {Number|null} [opts.bufferSize=null] https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
  * @constructor
  */
@@ -41,26 +42,7 @@ function MicrophoneStream(stream, opts) {
   function recorderProcess(e) {
     // onaudioprocess can be called at least once after we've stopped
     if (recording) {
-      var raw = e.inputBuffer.getChannelData(0);
-
-      /**
-       * @event MicrophoneStream#raw
-       * @param {Float32Array} data raw audio data from browser - each sample is a number from -1 to 1
-       */
-      self.emit('raw', raw);
-
-      // Standard (non-object mode) Node.js streams only accepts Buffers or Strings
-      var nodebuffer = new Buffer(raw.buffer);
-
-      /**
-       * Emit the readable/data event with a node-style buffer.
-       * Note: this is essentially a new DataView on the same underlying ArrayBuffer.
-       * The raw audio data is not actually coppied or changed.
-       *
-       * @event MicrophoneStream#data
-       * @param {Buffer} chunk node-style buffer with audio data; buffers are essentially a Uint8Array
-       */
-      self.push(nodebuffer);
+      self.push(opts.objectMode ? e.inputBuffer : new Buffer(e.inputBuffer.getChannelData(0)));
     }
   }
 
