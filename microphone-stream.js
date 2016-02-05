@@ -17,8 +17,9 @@ function MicrophoneStream(stream, opts) {
   // "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good
   // buffer size to balance between latency and audio quality."
   // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+  // however, webkitAudioContext (safari) requires it to be set'
   // Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384
-  var bufferSize = null;
+  var bufferSize = (typeof window.AudioContext === 'undefined' ? 4096 : null);
   opts = opts || {};
 
   bufferSize = opts.bufferSize || bufferSize;
@@ -46,6 +47,7 @@ function MicrophoneStream(stream, opts) {
     }
   }
 
+  var AudioContext = window.AudioContext || window.webkitAudioContext;
   var context = new AudioContext();
   var audioInput = context.createMediaStreamSource(stream);
   var recorder = context.createScriptProcessor(bufferSize, inputChannels, outputChannels);
@@ -63,7 +65,9 @@ function MicrophoneStream(stream, opts) {
     } catch (ex) {
       // This fails in some older versions of chrome. Nothing we can do about it.
     }
-    recorder.disconnect(0);
+    recorder.disconnect();
+    audioInput.disconnect();
+    context.close();
     recording = false;
     self.push(null);
     self.emit('close');
