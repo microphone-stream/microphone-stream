@@ -62,6 +62,38 @@ describe("MicrophoneStream", function() {
     });
   });
 
+  describe("stop", function() {
+    it("should emit close and end events", function() {
+      getUserMedia(function(err, stream) {
+        if (err) {
+          return done(err);
+        }
+        var closed = false;
+        var ended = false;
+        function check() {
+          if (closed && ended) {
+            done();
+          }
+        }
+        var micStream = new MicrophoneStream(stream);
+        micStream.on('error', done)
+          .on('close', function() {
+            closed = true;
+            check();
+          })
+          .on('end', function() {
+            ended = true;
+            check();
+          })
+          .on('data', function() {}) // put it into flowing mode or end will never fire
+          .once('data', function() { // wait for the first bit of data before calling stop
+            micStream.stop();
+          });
+
+      });
+    });
+  });
+
   describe("toRaw", function() {
     it("should convert fro a buffer to a Float32Array without copying data", function() {
       var source = new Buffer([0,0,0x80,0x3f]);

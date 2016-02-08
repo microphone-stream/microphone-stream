@@ -67,7 +67,11 @@ function MicrophoneStream(stream, opts) {
     }
     recorder.disconnect();
     audioInput.disconnect();
-    context.close();
+    try {
+      context.close();
+    } catch (ex) {
+      // this can also fail in older versions of chrome
+    }
     recording = false;
     self.push(null);
     self.emit('close');
