@@ -60,7 +60,7 @@ function MicrophoneStream(stream, opts) {
   recorder.connect(context.destination);
 
   this.stop = function() {
-    if (context.state == 'closed') {
+    if (context.state === 'closed') {
       return;
     }
     try {
