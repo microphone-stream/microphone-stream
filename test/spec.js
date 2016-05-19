@@ -5,13 +5,12 @@ var assert = require('assert');
 var getUserMedia = require('getusermedia');
 var MicrophoneStream = require('../microphone-stream.js');
 
-//var expect = require('expect.js');
+// var expect = require('expect.js');
 
-//var expectedAudio = fs.readFilesync('./resources/')
+// var expectedAudio = fs.readFilesync('./resources/')
 
-describe("MicrophoneStream", function() {
-
-  it("should capture audio and emit data events with buffers when in the default binary mode", function(done) {
+describe('MicrophoneStream', function() {
+  it('should capture audio and emit data events with buffers when in the default binary mode', function(done) {
     getUserMedia(function(err, stream) {
       if (err) {
         return done(err);
@@ -21,12 +20,12 @@ describe("MicrophoneStream", function() {
       micStream.on('error', done)
         .on('data', function(chunk) {
           assert(chunk instanceof Buffer);
-        done();
-      });
+          done();
+        });
     });
   });
 
-  it("should capture audio and emit AudioBuffers when in object mode", function(done) {
+  it('should capture audio and emit AudioBuffers when in object mode', function(done) {
     getUserMedia(function(err, stream) {
       if (err) {
         return done(err);
@@ -41,7 +40,7 @@ describe("MicrophoneStream", function() {
     });
   });
 
-  it("should emit a format event", function(done) {
+  it('should emit a format event', function(done) {
     getUserMedia(function(err, stream) {
       if (err) {
         return done(err);
@@ -62,8 +61,8 @@ describe("MicrophoneStream", function() {
     });
   });
 
-  describe("stop", function() {
-    it("should emit close and end events", function() {
+  describe('stop', function() {
+    it('should emit close and end events', function(done) {
       getUserMedia(function(err, stream) {
         if (err) {
           return done(err);
@@ -89,21 +88,19 @@ describe("MicrophoneStream", function() {
           .once('data', function() { // wait for the first bit of data before calling stop
             micStream.stop();
           });
-
       });
     });
   });
 
-  describe("toRaw", function() {
-    it("should convert fro a buffer to a Float32Array without copying data", function() {
-      var source = new Buffer([0,0,0x80,0x3f]);
+  describe('toRaw', function() {
+    it('should convert fro a buffer to a Float32Array without copying data', function() {
+      var source = new Buffer([0, 0, 0x80, 0x3f]);
       var actual = MicrophoneStream.toRaw(source);
-      assert(actual instanceof Float32Array, "it should return a Float32Array");
-      assert.equal(actual.length, 1, "the converted Float32Array length");
-      assert.equal(actual[0], 1, "converted Float32Array data value");
-      assert.equal(actual.buffer, source.buffer, "should have the same underlying buffer");
+      assert(actual instanceof Float32Array, 'it should return a Float32Array');
+      assert.equal(actual.length, 1, 'the converted Float32Array length');
+      assert.equal(actual[0], 1, 'converted Float32Array data value');
+      assert.equal(actual.buffer, source.buffer, 'should have the same underlying buffer');
     });
   });
-
 });
 
