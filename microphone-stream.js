@@ -60,6 +60,9 @@ function MicrophoneStream(stream, opts) {
   recorder.connect(context.destination);
 
   this.stop = function() {
+    if (context.state == 'closed') {
+      return;
+    }
     try {
       stream.getTracks()[0].stop();
     } catch (ex) {
@@ -68,7 +71,7 @@ function MicrophoneStream(stream, opts) {
     recorder.disconnect();
     audioInput.disconnect();
     try {
-      context.close();
+      context.close(); // returns a promise;
     } catch (ex) {
       // this can also fail in older versions of chrome
     }
