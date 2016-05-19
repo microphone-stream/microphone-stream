@@ -2,6 +2,14 @@ language: node_js
 node_js:
 - stable
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+deploy:
+  provider: npm
+  email: nathan@nfriedly.com
+  api_key:
+    secure: VnVr6RM6j0weGM27ryQGgfTsl1Qq20tRypnYUdSb8esXkv2jHF05/XiVRb82HRSF6umCDCt/aMrcaQbGZdbtX7MRGAqdExUwXAGCXNjSs8TiDRymqea2tnj13ct4D9auGmJD9NZtfgg1KO0rn4pV0l0QYmNHIk3FDh0P6PdJeeGByOxWOeDH/+IzR4ojv6AonJnprtolSn2xC+MQSxXbYZvZPHnP/Ca/AIudgaco+WlNTQuUm2Jt0glzX7NVRQGSI+blM/8XUUi7OlumIExpwmSg/AIadVPMGV/pLtZ0k2V+rED9RqKChzcwnphY13GPGNI5C7gJv0+RElpGg7EHV4oIMRcKhGpBgdbTdrguEk8NIKpIEa9AIyb+OdD+WWzug+RkNl1+A6pCa1PEc5Hy5y4Xt+ksysMypGIs4K6TpAWDdzDm78FB1A1TNVNL7GP2R78fDdi46I+/qsZP3+rbJ9QVqI8NflQoiAPyuf32JWi+kdC5GD8vZkhvArldYeUv6SO9Xw07hWkmhPo3tuzYvcQOSBU/e8uD0wRqprGA3ntJoAIUb3XPsXHOamKOvPDE0g7xJ3MGOChRGDp70KdPHY8HdXlmDu2lgjDkytaDKBe2+GmoC6OQTTgPc5liJWY2t1q85XOHf3dOb6deIQwtdhL5xv+Y6K9bF+P0F6NdzKw=
+  on:
+    tags: true
+    repo: saebekassebil/microphone-stream
