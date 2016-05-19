@@ -2,7 +2,7 @@
 
 var assert = require('assert');
 
-var getUserMedia = require('getusermedia');
+var getUserMedia = require('get-user-media-promise');
 var MicrophoneStream = require('../microphone-stream.js');
 
 // var expect = require('expect.js');
@@ -11,41 +11,29 @@ var MicrophoneStream = require('../microphone-stream.js');
 
 describe('MicrophoneStream', function() {
   it('should capture audio and emit data events with buffers when in the default binary mode', function(done) {
-    getUserMedia(function(err, stream) {
-      if (err) {
-        return done(err);
-      }
-
+    getUserMedia({audio: true}).then(function(stream) {
       var micStream = new MicrophoneStream(stream);
       micStream.on('error', done)
         .on('data', function(chunk) {
           assert(chunk instanceof Buffer);
           done();
         });
-    });
+    }).catch(done);
   });
 
   it('should capture audio and emit AudioBuffers when in object mode', function(done) {
-    getUserMedia(function(err, stream) {
-      if (err) {
-        return done(err);
-      }
-
+    getUserMedia({audio: true}).then(function(stream) {
       var micStream = new MicrophoneStream(stream, {objectMode: true});
       micStream.on('error', done)
         .on('data', function(data) {
           assert(data instanceof AudioBuffer);
           done();
         });
-    });
+    }).catch(done);
   });
 
   it('should emit a format event', function(done) {
-    getUserMedia(function(err, stream) {
-      if (err) {
-        return done(err);
-      }
-
+    getUserMedia({audio: true}).then(function(stream) {
       var micStream = new MicrophoneStream(stream);
       micStream.on('error', done)
         .on('format', function(format) {
@@ -58,15 +46,12 @@ describe('MicrophoneStream', function() {
           });
           done();
         });
-    });
+    }).catch(done);
   });
 
   describe('stop', function() {
     it('should emit close and end events', function(done) {
-      getUserMedia(function(err, stream) {
-        if (err) {
-          return done(err);
-        }
+      getUserMedia({audio: true}).then(function(stream) {
         var closed = false;
         var ended = false;
         function check() {
@@ -88,7 +73,7 @@ describe('MicrophoneStream', function() {
           .once('data', function() { // wait for the first bit of data before calling stop
             micStream.stop();
           });
-      });
+      }).catch(done);
     });
   });
 
