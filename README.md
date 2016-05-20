@@ -53,14 +53,14 @@ getUserMedia({ video: false, audio: true }, function(err, stream) {
 Where `opts` is an option object, with defaults:
 ```js
 {
-  objectMode: false, // 
-  bufferSize: null // 
+  objectMode: false,
+  bufferSize: null
 }
 ```
 
-* **bufferSize**: Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384. According to [Mozilla's Docs](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor)
- "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
-  to balance between latency and audio quality."
+* **bufferSize**: Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384. From [Mozilla's Docs](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor):
+ > It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
+ > to balance between latency and audio quality.
   
 * **objectMode**: if true, stream enters [objectMode] and emits AudioBuffers instead of Buffers. This has implications for `pipe()`'ing to other streams.
 
