@@ -70,7 +70,7 @@ Where `opts` is an option object, with defaults:
 #### `.stop()` 
 
 Stops the recording. 
-Note: firefox currently leaves the recording icon in place after recording has stopped.
+Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
 
 #### Event: `data`
 
