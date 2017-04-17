@@ -43,7 +43,7 @@ function MicrophoneStream(stream, opts) {
   function recorderProcess(e) {
     // onaudioprocess can be called at least once after we've stopped
     if (recording) {
-      self.push(opts.objectMode ? e.inputBuffer : new Buffer(e.inputBuffer.getChannelData(0)));
+      self.push(opts.objectMode ? e.inputBuffer : Buffer.from(e.inputBuffer.getChannelData(0).buffer));
     }
   }
 

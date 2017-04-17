@@ -1,5 +1,6 @@
 // Karma configuration
 // Generated on Fri Jan 15 2016 13:36:31 GMT-0500 (EST)
+var path = require('path');
 
 module.exports = function(config) {
   var cfg = {
@@ -57,11 +58,11 @@ module.exports = function(config) {
     customLaunchers: {
       ChromeWithPrerecordedMic: {
         base: 'Chrome',
-        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=test/resources/audio.wav']
+        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=' + path.join(__dirname, 'test/resources/audio.wav')]
       },
       ChromeTravisCI: {
         base: 'Chrome',
-        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=test/resources/audio.wav', '--no-sandbox']
+        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=' + path.join(__dirname, 'test/resources/audio.wav'), '--no-sandbox']
       }
     },
 

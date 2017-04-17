@@ -75,6 +75,59 @@ describe('MicrophoneStream', function() {
           });
       }).catch(done);
     });
+
+    it('should capture audio and emit AudioBuffers with non-0 data when in object mode', function(done) {
+      this.timeout(3000);
+      getUserMedia({audio: true}).then(function(stream) {
+        var hasNonZero = false;
+        var micStream = new MicrophoneStream(stream, {objectMode: true});
+        micStream.on('error', done)
+          .on('data', function(audioBuffer) {
+            if (hasNonZero) {
+              micStream.stop();
+              return;
+            }
+            var data = audioBuffer.getChannelData(0); // Float32Array
+            for (var len = data.length, i = 0; i < len; i++) {
+              if (data[i] !== 0) {
+                hasNonZero = true;
+                break;
+              }
+            }
+          })
+          .on('end', function() {
+            assert(hasNonZero, 'chunk should have some non-zero values');
+            done();
+          });
+        setTimeout(micStream.stop.bind(micStream), 1000);
+      }).catch(done);
+    });
+
+    it('should capture audio and emit buffers with non-0 data when in binary mode', function(done) {
+      this.timeout(3000);
+      getUserMedia({audio: true}).then(function(stream) {
+        var hasNonZero = false;
+        var micStream = new MicrophoneStream(stream);
+        micStream.on('error', done)
+          .on('data', function(chunk) {
+            if (hasNonZero) {
+              micStream.stop();
+              return;
+            }
+            for (var len = chunk.length, i = 0; i < len; i++) {
+              if (chunk[i] !== 0) {
+                hasNonZero = true;
+                break;
+              }
+            }
+          })
+          .on('end', function() {
+            assert(hasNonZero, 'chunk should have some non-zero values');
+            done();
+          });
+        setTimeout(micStream.stop.bind(micStream), 1000);
+      }).catch(done);
+    });
   });
 
   describe('toRaw', function() {
