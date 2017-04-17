@@ -2,14 +2,14 @@
 
 [![Build Status](https://travis-ci.org/saebekassebil/microphone-stream.svg?branch=master)](https://travis-ci.org/saebekassebil/microphone-stream)
 
-If you just want to get some audio through from your microphone, this is
-what you're looking for!
+If you just want to get some audio data from your microphone, this is what you're looking for!
 
 Converts a [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) (from [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia)) into a standard Node.js-style stream for easy `pipe()`ing.
 
-Note: this module is intended for use in browsers (presumably with with [browserify](http://browserify.org/)), 
-it does not work in Node.js.
-Additionally, this only works in a limited set of browsers, see http://caniuse.com/#search=getusermedia for details.
+Note: This only works in a [limited set of browsers](http://caniuse.com/#search=getusermedia)
+(typically with with [webpack](http://webpack.github.io/) or [browserify](http://browserify.org/)),
+and then only for [https or localhost in Chrome](https://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features).
+It does not work in Node.js.
 
 
 ### Example
