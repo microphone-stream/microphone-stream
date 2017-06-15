@@ -23,7 +23,7 @@ function MicrophoneStream(stream, opts) {
   opts = opts || {};
 
   bufferSize = opts.bufferSize || bufferSize;
-  let encoder = opts.encoder || function(x){return x;}; //encoder is used to transform data before it is bufferized
+  var encoder = opts.encoder || function(x){return x;}; //encoder is used to transform data before it is bufferized
 
   // We can only emit one channel's worth of audio, so only one input. (Who has multiple microphones anyways?)
   var inputChannels = 1;
