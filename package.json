@@ -35,7 +35,9 @@
     "url": "https://github.com/saebekassebil/microphone-stream/issues"
   },
   "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
-  "dependencies": {},
+  "dependencies": {
+    "buffer-from": "^0.1.1"
+  },
   "devDependencies": {
     "browserify": "^14.3.0",
     "eslint": "^3.19.0",

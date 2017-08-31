@@ -1,6 +1,8 @@
 'use strict';
 var Readable = require('stream').Readable;
 var util = require('util');
+// some versions of the buffer browser lib don't support Buffer.from (such as the one included by the current version of express-browserify)
+var bufferFrom = require('buffer-from');
 
 /**
  * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and optionally converts the audio to Buffers
@@ -43,7 +45,7 @@ function MicrophoneStream(stream, opts) {
   function recorderProcess(e) {
     // onaudioprocess can be called at least once after we've stopped
     if (recording) {
-      self.push(opts.objectMode ? e.inputBuffer : Buffer.from(e.inputBuffer.getChannelData(0).buffer));
+      self.push(opts.objectMode ? e.inputBuffer : bufferFrom(e.inputBuffer.getChannelData(0).buffer));
     }
   }
 
