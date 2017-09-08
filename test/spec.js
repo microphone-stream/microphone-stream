@@ -37,13 +37,12 @@ describe('MicrophoneStream', function() {
       var micStream = new MicrophoneStream(stream);
       micStream.on('error', done)
         .on('format', function(format) {
-          assert.deepEqual(format, {
-            channels: 1,
-            bitDepth: 32,
-            sampleRate: 48000,
-            signed: true,
-            float: true
-          });
+          assert(format);
+          assert.equal(format.channels, 1);
+          assert.equal(format.bitDepth, 32);
+          assert(format.sampleRate > 0);
+          assert(format.signed);
+          assert(format.float);
           done();
         });
     }).catch(done);
