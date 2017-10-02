@@ -1,6 +1,6 @@
 {
   "name": "microphone-stream",
-  "version": "3.0.9",
+  "version": "4.0.0",
   "description": "A stream of raw audio data from the microphone for use in browsers with getUserMedia",
   "main": "microphone-stream.js",
   "repository": {
