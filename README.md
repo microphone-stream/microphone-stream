@@ -18,48 +18,60 @@ It does not work in Node.js.
 var getUserMedia = require('get-user-media-promise');
 var MicrophoneStream = require('microphone-stream');
 
-getUserMedia({ video: false, audio: true })
-  .then(function(stream) {
-    var micStream = new MicrophoneStream(stream);
+document.getElementById('my-start-button').onclick = function() {
 
-    // get Buffers (Essentially a Uint8Array DataView of the same Float32 values)
-    micStream.on('data', function(chunk) {
-      // Optionally convert the Buffer back into a Float32Array
-      // (This actually just creates a new DataView - the underlying audio data is not copied or modified.)
-      var raw = MicrophoneStream.toRaw(chunk)
-      //...
+  // note: for iOS Safari, the constructor must be called in response to a tap, or else the AudioContext will remain
+  // suspended and will not provide any audio data.
+  var micStream = new MicrophoneStream();
 
-      // note: if you set options.objectMode=true, the `data` event will output AudioBuffers instead of Buffers
-     });
-
-    // or pipe it to another stream
-    micStream.pipe(/*...*/);
-
-    // It also emits a format event with various details (frequency, channels, etc)
-    micStream.on('format', function(format) {
-      console.log(format);
+  getUserMedia({ video: false, audio: true })
+    .then(function(stream) {
+      micStream.setStream(stream);
+    }).catch(function(error) {
+      console.log(error);
     });
 
-    // Stop when ready
-    document.getElementById('my-stop-button').onclick = function() {
-      micStream.stop();
-    };
-  }).catch(function(error) {
-    console.log(error);
+  // get Buffers (Essentially a Uint8Array DataView of the same Float32 values)
+  micStream.on('data', function(chunk) {
+    // Optionally convert the Buffer back into a Float32Array
+    // (This actually just creates a new DataView - the underlying audio data is not copied or modified.)
+    var raw = MicrophoneStream.toRaw(chunk)
+    //...
+
+    // note: if you set options.objectMode=true, the `data` event will output AudioBuffers instead of Buffers
+   });
+
+  // or pipe it to another stream
+  micStream.pipe(/*...*/);
+
+  // It also emits a format event with various details (frequency, channels, etc)
+  micStream.on('format', function(format) {
+    console.log(format);
   });
+
+  // Stop when ready
+  document.getElementById('my-stop-button').onclick = function() {
+    micStream.stop();
+  };
+ }
+
+
 ```
 
 ## `API`
 
-### `new MicrophoneStream(stream, opts)` -> [Readable Stream](https://nodejs.org/api/stream.html)
+### `new MicrophoneStream(opts)` -> [Readable Stream](https://nodejs.org/api/stream.html)
 
 Where `opts` is an option object, with defaults:
 ```js
 {
+  stream: null,
   objectMode: false,
   bufferSize: null
 }
 ```
+
+* **stream**: [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) instance. For iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
 
 * **bufferSize**: Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384. From [Mozilla's Docs](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor):
  > It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
@@ -67,9 +79,14 @@ Where `opts` is an option object, with defaults:
   
 * **objectMode**: if true, stream enters [objectMode] and emits AudioBuffers instead of Buffers. This has implications for `pipe()`'ing to other streams.
 
-#### `.stop()` 
+#### `.setStream(mediaStream)`
 
-Stops the recording. 
+Set the mediaStream, necessary for iOS 11 support where the underlying AudioContext must be resumed in response to a user tap, but the the mediaStream won't be available until later.
+Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
+
+#### `.stop()`
+
+Stops the recording.
 Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
 
 #### Event: `data`
