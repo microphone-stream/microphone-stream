@@ -58,7 +58,6 @@ function MicrophoneStream(opts) {
   var AudioContext = window.AudioContext || window.webkitAudioContext;
   var context = new AudioContext();
   var recorder = context.createScriptProcessor(bufferSize, inputChannels, outputChannels);
-  recorder.onaudioprocess = recorderProcess;
 
   // Workaround for Safari on iOS 11 - context starts out suspended, and the resume() call must be in response to a tap.
   // This allows you to create the MicrophoneStream instance synchronously in response to the first tap,
@@ -78,7 +77,9 @@ function MicrophoneStream(opts) {
   this.setStream = function(stream) {
     audioInput = context.createMediaStreamSource(stream);
     audioInput.connect(recorder);
+    recorder.onaudioprocess = recorderProcess;
   };
+
   if (opts.stream) {
     this.setStream(stream);
   }
