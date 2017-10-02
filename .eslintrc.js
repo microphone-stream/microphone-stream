@@ -8,6 +8,7 @@ module.exports = {
     "max-len": "off",
     "no-inline-comments": "off",
     "no-var": "off",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "prefer-rest-params": "off"
   }
 };
