@@ -67,7 +67,8 @@ Where `opts` is an option object, with defaults:
 {
   stream: null,
   objectMode: false,
-  bufferSize: null
+  bufferSize: null,
+  context: null
 }
 ```
 
@@ -78,6 +79,8 @@ Where `opts` is an option object, with defaults:
  > to balance between latency and audio quality.
   
 * **objectMode**: if true, stream enters [objectMode] and emits AudioBuffers instead of Buffers. This has implications for `pipe()`'ing to other streams.
+
+* **context** is the AudioContext instance. If omitted, one will be created automatically.
 
 #### `.setStream(mediaStream)`
 

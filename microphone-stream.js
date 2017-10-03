@@ -13,6 +13,7 @@ var bufferFrom = require('buffer-from');
  * @param {MediaStream} [opts.stream] https://developer.mozilla.org/en-US/docs/Web/API/MediaStream - for iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
  * @param {Boolean} [opts.objectMode=false] Puts the stream into ObjectMode where it emits AudioBuffers instead of Buffers - see https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
  * @param {Number|null} [opts.bufferSize=null] https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+ * @param {AudioContext} [opts.context] - AudioContext - will be automatically created if not passed in
  * @constructor
  */
 function MicrophoneStream(opts) {
@@ -22,14 +23,15 @@ function MicrophoneStream(opts) {
     opts = arguments[1] || {};
     opts.stream = stream;
   }
+
+  opts = opts || {};
+
   // "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good
   // buffer size to balance between latency and audio quality."
   // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
   // however, webkitAudioContext (safari) requires it to be set'
   // Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384
   var bufferSize = (typeof window.AudioContext === 'undefined' ? 4096 : null);
-  opts = opts || {};
-
   bufferSize = opts.bufferSize || bufferSize;
 
   // We can only emit one channel's worth of audio, so only one input. (Who has multiple microphones anyways?)
@@ -56,21 +58,21 @@ function MicrophoneStream(opts) {
   }
 
   var AudioContext = window.AudioContext || window.webkitAudioContext;
-  var context = new AudioContext();
+  var context = this.context = opts.context || new AudioContext();
   var recorder = context.createScriptProcessor(bufferSize, inputChannels, outputChannels);
 
-  // Workaround for Safari on iOS 11 - context starts out suspended, and the resume() call must be in response to a tap.
-  // This allows you to create the MicrophoneStream instance synchronously in response to the first tap,
-  // and then connect the MediaStream asynchronously, after the user has granted microphone access.
+  // other half of workaround for chrome bugs
+  recorder.connect(context.destination);
+
   var audioInput;
-  if (context.state === 'suspended') {
-    context.resume();
-  }
 
   /**
    * Set the MediaStream
    *
-   * This was removed from the constructor to enable better compatibility with Safari on iOS 11.
+   * This was separated from the constructor to enable better compatibility with Safari on iOS 11.
+   *
+   * Typically the stream is only available asynchronously, but the context must be created or resumed directly in
+   * response to a user's tap on iOS.
    *
    * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
    */
@@ -84,8 +86,6 @@ function MicrophoneStream(opts) {
     this.setStream(stream);
   }
 
-  // other half of workaround for chrome bugs
-  recorder.connect(context.destination);
 
   this.stop = function() {
     if (context.state === 'closed') {
@@ -123,7 +123,7 @@ function MicrophoneStream(opts) {
 util.inherits(MicrophoneStream, Readable);
 
 MicrophoneStream.prototype._read = function(/* bytes */) {
-  // no-op, (flow-control doesn't really work on sound)
+  // no-op, (flow-control doesn't really work on live audio)
 };
 
 /**
