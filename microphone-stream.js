@@ -18,7 +18,7 @@ var bufferFrom = require('buffer-from');
  */
 function MicrophoneStream(opts) {
   // backwards compatibility - passing in the Stream here will generally not work on iOS 11 Safari
-  if (typeof MediaStream && opts instanceof MediaStream) {
+  if (typeof MediaStream !== 'undefined' && opts instanceof MediaStream) {
     var stream = opts;
     opts = arguments[1] || {};
     opts.stream = stream;
