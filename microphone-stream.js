@@ -77,6 +77,7 @@ function MicrophoneStream(opts) {
    * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
    */
   this.setStream = function(stream) {
+    this.stream = stream;
     audioInput = context.createMediaStreamSource(stream);
     audioInput.connect(recorder);
     recorder.onaudioprocess = recorderProcess;
@@ -92,7 +93,7 @@ function MicrophoneStream(opts) {
       return;
     }
     try {
-      stream.getTracks()[0].stop();
+      this.stream.getTracks()[0].stop();
     } catch (ex) {
       // This fails in some older versions of chrome. Nothing we can do about it.
     }
