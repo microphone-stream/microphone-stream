@@ -75,6 +75,20 @@ describe('MicrophoneStream', function() {
       }).catch(done);
     });
 
+    it('should attempt to stop the tracks of the user media stream', function(done) {
+      function getMediaTrackState(stream) {
+        return stream.getTracks()[0].readyState;
+      }
+
+      getUserMedia({audio: true}).then(function(stream) {
+        assert(getMediaTrackState(stream) === 'live');
+        var micStream = new MicrophoneStream(stream);
+        micStream.stop();
+        assert(getMediaTrackState(stream) === 'ended');
+        done();
+      });
+    });
+
     it('should capture audio and emit AudioBuffers with non-0 data when in object mode', function(done) {
       this.timeout(3000);
       getUserMedia({audio: true}).then(function(stream) {
