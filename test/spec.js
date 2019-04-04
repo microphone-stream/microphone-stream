@@ -14,10 +14,10 @@ describe('MicrophoneStream', function() {
     getUserMedia({audio: true}).then(function(stream) {
       var micStream = new MicrophoneStream(stream);
       micStream.on('error', done)
-        .on('data', function(chunk) {
-          assert(chunk instanceof Buffer);
-          done();
-        });
+          .on('data', function(chunk) {
+            assert(chunk instanceof Buffer);
+            done();
+          });
     }).catch(done);
   });
 
@@ -25,10 +25,10 @@ describe('MicrophoneStream', function() {
     getUserMedia({audio: true}).then(function(stream) {
       var micStream = new MicrophoneStream(stream, {objectMode: true});
       micStream.on('error', done)
-        .on('data', function(data) {
-          assert(data instanceof AudioBuffer);
-          done();
-        });
+          .on('data', function(data) {
+            assert(data instanceof AudioBuffer);
+            done();
+          });
     }).catch(done);
   });
 
@@ -36,15 +36,15 @@ describe('MicrophoneStream', function() {
     getUserMedia({audio: true}).then(function(stream) {
       var micStream = new MicrophoneStream(stream);
       micStream.on('error', done)
-        .on('format', function(format) {
-          assert(format);
-          assert.equal(format.channels, 1);
-          assert.equal(format.bitDepth, 32);
-          assert(format.sampleRate > 0);
-          assert(format.signed);
-          assert(format.float);
-          done();
-        });
+          .on('format', function(format) {
+            assert(format);
+            assert.equal(format.channels, 1);
+            assert.equal(format.bitDepth, 32);
+            assert(format.sampleRate > 0);
+            assert(format.signed);
+            assert(format.float);
+            done();
+          });
     }).catch(done);
   });
 
@@ -60,18 +60,18 @@ describe('MicrophoneStream', function() {
         }
         var micStream = new MicrophoneStream(stream);
         micStream.on('error', done)
-          .on('close', function() {
-            closed = true;
-            check();
-          })
-          .on('end', function() {
-            ended = true;
-            check();
-          })
-          .on('data', function() {}) // put it into flowing mode or end will never fire
-          .once('data', function() { // wait for the first bit of data before calling stop
-            micStream.stop();
-          });
+            .on('close', function() {
+              closed = true;
+              check();
+            })
+            .on('end', function() {
+              ended = true;
+              check();
+            })
+            .on('data', function() {}) // put it into flowing mode or end will never fire
+            .once('data', function() { // wait for the first bit of data before calling stop
+              micStream.stop();
+            });
       }).catch(done);
     });
 
@@ -95,23 +95,23 @@ describe('MicrophoneStream', function() {
         var hasNonZero = false;
         var micStream = new MicrophoneStream(stream, {objectMode: true});
         micStream.on('error', done)
-          .on('data', function(audioBuffer) {
-            if (hasNonZero) {
-              micStream.stop();
-              return;
-            }
-            var data = audioBuffer.getChannelData(0); // Float32Array
-            for (var len = data.length, i = 0; i < len; i++) {
-              if (data[i] !== 0) {
-                hasNonZero = true;
-                break;
+            .on('data', function(audioBuffer) {
+              if (hasNonZero) {
+                micStream.stop();
+                return;
               }
-            }
-          })
-          .on('end', function() {
-            assert(hasNonZero, 'chunk should have some non-zero values');
-            done();
-          });
+              var data = audioBuffer.getChannelData(0); // Float32Array
+              for (var len = data.length, i = 0; i < len; i++) {
+                if (data[i] !== 0) {
+                  hasNonZero = true;
+                  break;
+                }
+              }
+            })
+            .on('end', function() {
+              assert(hasNonZero, 'chunk should have some non-zero values');
+              done();
+            });
         setTimeout(micStream.stop.bind(micStream), 1000);
       }).catch(done);
     });
@@ -122,22 +122,22 @@ describe('MicrophoneStream', function() {
         var hasNonZero = false;
         var micStream = new MicrophoneStream(stream);
         micStream.on('error', done)
-          .on('data', function(chunk) {
-            if (hasNonZero) {
-              micStream.stop();
-              return;
-            }
-            for (var len = chunk.length, i = 0; i < len; i++) {
-              if (chunk[i] !== 0) {
-                hasNonZero = true;
-                break;
+            .on('data', function(chunk) {
+              if (hasNonZero) {
+                micStream.stop();
+                return;
               }
-            }
-          })
-          .on('end', function() {
-            assert(hasNonZero, 'chunk should have some non-zero values');
-            done();
-          });
+              for (var len = chunk.length, i = 0; i < len; i++) {
+                if (chunk[i] !== 0) {
+                  hasNonZero = true;
+                  break;
+                }
+              }
+            })
+            .on('end', function() {
+              assert(hasNonZero, 'chunk should have some non-zero values');
+              done();
+            });
         setTimeout(micStream.stop.bind(micStream), 1000);
       }).catch(done);
     });
