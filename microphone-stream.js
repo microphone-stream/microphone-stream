@@ -1,5 +1,5 @@
 'use strict';
-var Readable = require('stream').Readable;
+var Readable = require('readable-stream');
 var util = require('util');
 // some versions of the buffer browser lib don't support Buffer.from (such as the one included by the current version of express-browserify)
 var bufferFrom = require('buffer-from');
