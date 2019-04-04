@@ -36,17 +36,17 @@
   },
   "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
   "dependencies": {
-    "buffer-from": "^0.1.1"
+    "buffer-from": "^1.1.1"
   },
   "devDependencies": {
-    "browserify": "^14.5.0",
-    "eslint": "^4.12.1",
-    "eslint-config-google": "^0.9.1",
-    "get-user-media-promise": "^1.0.0",
-    "karma": "^1.7.1",
-    "karma-browserify": "^5.1.2",
+    "browserify": "^16.2.3",
+    "eslint": "^5.16.0",
+    "eslint-config-google": "^0.12.0",
+    "get-user-media-promise": "^1.1.4",
+    "karma": "^4.0.1",
+    "karma-browserify": "^6.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
-    "mocha": "^3.5.3"
+    "mocha": "^6.0.2"
   }
 }
