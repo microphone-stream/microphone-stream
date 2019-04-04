@@ -36,7 +36,8 @@
   },
   "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
   "dependencies": {
-    "buffer-from": "^1.1.1"
+    "buffer-from": "^1.1.1",
+    "readable-stream": "^3.3.0"
   },
   "devDependencies": {
     "browserify": "^16.2.3",
