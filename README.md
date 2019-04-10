@@ -9,7 +9,7 @@ If you just want to get some audio data from your microphone, this is what you'r
 Converts a [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) (from [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia)) into a standard Node.js-style stream for easy `pipe()`ing.
 
 Note: This only works in a [limited set of browsers](http://caniuse.com/#search=getusermedia)
-(typically with with [webpack](http://webpack.github.io/) or [browserify](http://browserify.org/)),
+(typically with [webpack](http://webpack.github.io/) or [browserify](http://browserify.org/)),
 and then only for [https or localhost in Chrome](https://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features).
 It does not work in Node.js.
 
@@ -86,7 +86,7 @@ Where `opts` is an option object, with defaults:
 
 #### `.setStream(mediaStream)`
 
-Set the mediaStream, necessary for iOS 11 support where the underlying AudioContext must be resumed in response to a user tap, but the the mediaStream won't be available until later.
+Set the mediaStream, necessary for iOS 11 support where the underlying AudioContext must be resumed in response to a user tap, but the mediaStream won't be available until later.
 Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
 
 #### `.stop()`
