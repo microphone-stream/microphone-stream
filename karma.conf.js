@@ -58,7 +58,7 @@ module.exports = function(config) {
     customLaunchers: {
       ChromeWithPrerecordedMic: {
         base: 'Chrome',
-        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=' + path.join(__dirname, 'test/resources/audio.wav')]
+        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=' + path.join(__dirname, 'test/resources/audio.wav'), '--no-sandbox']
       },
       ChromeTravisCI: {
         base: 'Chrome',
