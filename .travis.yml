@@ -3,9 +3,8 @@ node_js:
 - stable
 services:
   - xvfb
-before_script:
-- export CHROME_BIN=chromium-browser
-- export DISPLAY=:99.0
+addons:
+    chrome: stable
 deploy:
   provider: npm
   email: nathan@nfriedly.com
