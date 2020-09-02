@@ -54,13 +54,9 @@ module.exports = function(config) {
     browsers: ['ChromeWithPrerecordedMic'],
 
     // you can define custom flags
-    // there's a handy list of chrome flags at
+    // there's a handy list of chrome flags at https://peter.sh/experiments/chromium-command-line-switches/
     customLaunchers: {
       ChromeWithPrerecordedMic: {
-        base: 'Chrome',
-        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=' + path.join(__dirname, 'test/resources/audio.wav'), '--no-sandbox']
-      },
-      ChromeTravisCI: {
         base: 'Chrome',
         flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-file-for-fake-audio-capture=' + path.join(__dirname, 'test/resources/audio.wav'), '--no-sandbox']
       }
@@ -74,10 +70,6 @@ module.exports = function(config) {
     // how many browser should be started simultaneous
     concurrency: Infinity
   };
-
-  if (process.env.TRAVIS) {
-    cfg.browsers = ['ChromeTravisCI'];
-  }
 
   config.set(cfg);
 };
