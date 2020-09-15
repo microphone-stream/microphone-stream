@@ -94,6 +94,16 @@ Note: Some versions of Firefox leave the recording icon in place after recording
 Stops the recording.
 Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
 
+### `pauseRecording()`
+
+Temporarily stop emitting new data. Audio data recieved from the microphone after this will be dropped.
+
+Note: the underlying Stream interface has a [`.pause()` API](https://nodejs.org/api/stream.html#stream_readable_pause) that causes new data to be buffered rather than dropped.
+
+### `playRecording()`
+
+Resume emitting new audio data after `pauseRecording()` was called.
+
 #### Event: `data`
 
 Emits either a [Buffer] with raw 32-bit Floating point audio data, or if [objectMode] is set, an [AudioBuffer] containing the data + some metadata.
