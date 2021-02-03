@@ -2,7 +2,7 @@
   "name": "microphone-stream",
   "version": "5.1.0",
   "description": "A stream of raw audio data from the microphone for use in browsers with getUserMedia",
-  "main": "microphone-stream.js",
+  "main": "src/microphone-stream.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/saebekassebil/microphone-stream.git"
