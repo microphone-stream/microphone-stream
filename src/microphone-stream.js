@@ -75,6 +75,7 @@ function MicrophoneStream(opts) {
    * response to a user's tap on iOS.
    *
    * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
+   * @type {function(MediaStream): void}
    */
   this.setStream = function(stream) {
     this.stream = stream;
