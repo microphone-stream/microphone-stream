@@ -79,4 +79,4 @@ declare namespace MicrophoneStream {
  * @param {Buffer} chunk node-style buffer of audio data from a 'data' event or read() call
  * @return {Float32Array} raw 32-bit float data view of audio data
  */
-declare function toRaw(chunk: any): Float32Array;
+declare function toRaw(chunk: Buffer): Float32Array;
