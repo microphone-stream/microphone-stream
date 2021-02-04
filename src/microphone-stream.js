@@ -75,6 +75,7 @@ function MicrophoneStream(opts) {
    * response to a user's tap on iOS.
    *
    * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
+   * @type {function(MediaStream): void}
    */
   this.setStream = function(stream) {
     this.stream = stream;
@@ -87,14 +88,27 @@ function MicrophoneStream(opts) {
     this.setStream(stream);
   }
 
+  /**
+   * Temporarily stop emitting new data. Audio data recieved from the microphone after this will be dropped.
+   *
+   * Note: the underlying Stream interface has a .pause() API that causes new data to be buffered rather than dropped.
+   */
   this.pauseRecording = function() {
     recording = false;
   };
 
+  /**
+   * Resume emitting new audio data after pauseRecording() was called.
+   */
   this.playRecording = function() {
     recording = true;
   };
 
+  /**
+   * Stops the recording.
+   *
+   * Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
+   */
   this.stop = function() {
     if (context.state === 'closed') {
       return;
@@ -139,11 +153,14 @@ MicrophoneStream.prototype._read = function(/* bytes */) {
  * Note: this is just a new DataView for the same underlying buffer -
  * the actual audio data is not copied or changed here.
  *
+ * @memberof MicrophoneStream
  * @param {Buffer} chunk node-style buffer of audio data from a 'data' event or read() call
  * @return {Float32Array} raw 32-bit float data view of audio data
  */
-MicrophoneStream.toRaw = function toFloat32(chunk) {
+var toRaw = function toFloat32(chunk) {
   return new Float32Array(chunk.buffer);
 };
+
+MicrophoneStream.toRaw = toRaw;
 
 module.exports = MicrophoneStream;
