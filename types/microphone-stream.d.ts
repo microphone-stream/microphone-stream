@@ -68,5 +68,15 @@ declare class MicrophoneStream {
     _read(): void;
 }
 declare namespace MicrophoneStream {
-    function toRaw(chunk: any): Float32Array;
+    export { toRaw };
 }
+/**
+ * Converts a Buffer back into the raw Float32Array format that browsers use.
+ * Note: this is just a new DataView for the same underlying buffer -
+ * the actual audio data is not copied or changed here.
+ *
+ * @memberof MicrophoneStream
+ * @param {Buffer} chunk node-style buffer of audio data from a 'data' event or read() call
+ * @return {Float32Array} raw 32-bit float data view of audio data
+ */
+declare function toRaw(chunk: any): Float32Array;

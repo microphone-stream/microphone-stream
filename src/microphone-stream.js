@@ -153,11 +153,14 @@ MicrophoneStream.prototype._read = function(/* bytes */) {
  * Note: this is just a new DataView for the same underlying buffer -
  * the actual audio data is not copied or changed here.
  *
+ * @memberof MicrophoneStream
  * @param {Buffer} chunk node-style buffer of audio data from a 'data' event or read() call
  * @return {Float32Array} raw 32-bit float data view of audio data
  */
-MicrophoneStream.toRaw = function toFloat32(chunk) {
+var toRaw = function toFloat32(chunk) {
   return new Float32Array(chunk.buffer);
 };
+
+MicrophoneStream.toRaw = toRaw;
 
 module.exports = MicrophoneStream;
