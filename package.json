@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "autofix": "eslint . --fix",
     "test-integration": "karma start --single-run",
+    "pretest": "tsc",
     "test": "npm run lint && npm run test-integration",
     "watch": "karma start"
   },
