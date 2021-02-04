@@ -88,14 +88,27 @@ function MicrophoneStream(opts) {
     this.setStream(stream);
   }
 
+  /**
+   * Temporarily stop emitting new data. Audio data recieved from the microphone after this will be dropped.
+   *
+   * Note: the underlying Stream interface has a .pause() API that causes new data to be buffered rather than dropped.
+   */
   this.pauseRecording = function() {
     recording = false;
   };
 
+  /**
+   * Resume emitting new audio data after pauseRecording() was called.
+   */
   this.playRecording = function() {
     recording = true;
   };
 
+  /**
+   * Stops the recording.
+   *
+   * Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
+   */
   this.stop = function() {
     if (context.state === 'closed') {
       return;

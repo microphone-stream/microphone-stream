@@ -49,8 +49,21 @@ declare class MicrophoneStream {
      * @type {function(MediaStream): void}
      */
     setStream: (arg0: MediaStream) => void;
+    /**
+     * Temporarily stop emitting new data. Audio data recieved from the microphone after this will be dropped.
+     *
+     * Note: the underlying Stream interface has a .pause() API that causes new data to be buffered rather than dropped.
+     */
     pauseRecording: () => void;
+    /**
+     * Resume emitting new audio data after pauseRecording() was called.
+     */
     playRecording: () => void;
+    /**
+     * Stops the recording.
+     *
+     * Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
+     */
     stop: () => void;
     _read(): void;
 }
