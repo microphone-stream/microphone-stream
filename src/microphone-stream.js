@@ -72,7 +72,10 @@ function MicrophoneStream(opts) {
   // other half of workaround for chrome bugs
   recorder.connect(context.destination);
 
-  var audioInput;
+  /**
+   * @type {MediaStreamAudioSourceNode}
+   */
+  this.audioInput = null;
 
   /**
    * Set the MediaStream
@@ -87,8 +90,8 @@ function MicrophoneStream(opts) {
    */
   this.setStream = function (stream) {
     this.stream = stream;
-    audioInput = context.createMediaStreamSource(stream);
-    audioInput.connect(recorder);
+    this.audioInput = context.createMediaStreamSource(stream);
+    this.audioInput.connect(recorder);
     recorder.onaudioprocess = recorderProcess;
   };
 
@@ -127,8 +130,8 @@ function MicrophoneStream(opts) {
       // This fails in some older versions of chrome. Nothing we can do about it.
     }
     recorder.disconnect();
-    if (audioInput) {
-      audioInput.disconnect();
+    if (this.audioInput) {
+      this.audioInput.disconnect();
     }
     try {
       context.close(); // returns a promise;

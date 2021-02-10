@@ -38,6 +38,10 @@ declare class MicrophoneStream {
     }, ...args: any[]);
     context: any;
     /**
+     * @type {MediaStreamAudioSourceNode}
+     */
+    audioInput: MediaStreamAudioSourceNode;
+    /**
      * Set the MediaStream
      *
      * This was separated from the constructor to enable better compatibility with Safari on iOS 11.
