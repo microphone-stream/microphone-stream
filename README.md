@@ -46,6 +46,9 @@ document.getElementById('my-start-button').onclick = function() {
   // or pipe it to another stream
   micStream.pipe(/*...*/);
 
+  // Access the internal audioInput for connecting to another nodes
+  micStream.audioInput.connect(/*...*/));
+
   // It also emits a format event with various details (frequency, channels, etc)
   micStream.on('format', function(format) {
     console.log(format);

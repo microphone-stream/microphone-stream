@@ -82,6 +82,19 @@ describe("MicrophoneStream", function () {
         .catch(done);
     });
 
+    it("should expose internal audioInput", function (done) {
+      getUserMedia({ audio: true })
+        .then(function (stream) {
+          var micStream = new MicrophoneStream(stream);
+          assert(
+            micStream.audioInput instanceof MediaStreamAudioSourceNode,
+            "should return a MediaStreamAudioSourceNode"
+          );
+          done();
+        })
+        .catch(done);
+    });
+
     it("should attempt to stop the tracks of the user media stream", function (done) {
       function getMediaTrackState(stream) {
         return stream.getTracks()[0].readyState;
