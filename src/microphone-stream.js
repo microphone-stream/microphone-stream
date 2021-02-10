@@ -72,6 +72,9 @@ function MicrophoneStream(opts) {
   // other half of workaround for chrome bugs
   recorder.connect(context.destination);
 
+  /**
+   * @type {MediaStreamAudioSourceNode}
+   */
   this.audioInput = null;
 
   /**

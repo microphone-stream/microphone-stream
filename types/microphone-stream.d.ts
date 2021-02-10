@@ -37,7 +37,10 @@ declare class MicrophoneStream {
         context: AudioContext;
     }, ...args: any[]);
     context: any;
-    audioInput: any;
+    /**
+     * @type {MediaStreamAudioSourceNode}
+     */
+    audioInput: MediaStreamAudioSourceNode;
     /**
      * Set the MediaStream
      *
