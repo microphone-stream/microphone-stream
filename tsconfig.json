@@ -2,6 +2,7 @@
   "include": ["src/**/*"],
 
   "compilerOptions": {
+    "alwaysStrict": true,
     "declaration": true,
     "rootDir": "src",
     "outDir": "dist",
