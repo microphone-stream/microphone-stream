@@ -1,19 +1,38 @@
 var Readable = require("readable-stream");
 var util = require("util");
-// some versions of the buffer browser lib don't support Buffer.from (such as the one included by the current version of express-browserify)
+// some versions of the buffer browser lib don't support Buffer.from (such as the one included by the
+// current version of express-browserify)
 var bufferFrom = require("buffer-from");
+
+export type MicrophoneStreamOptions {
+  /**
+   * Represents a stream of media content. A stream consists of several tracks such as video or audio tracks.
+   * 
+   * For iOS compatibility, it is recommended that you create the MicrophoneStream instance in response
+   * to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
+   * 
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
+   */
+  stream: MediaStream;
+  /**
+   * Puts the stream into ObjectMode where it emits AudioBuffers instead of Buffers
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+   */
+  objectMode: boolean;
+  /**
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+   */
+  bufferSize: number | null;
+  /**
+   * An audio-processing graph built from audio modules linked together, each represented by an AudioNode.
+   */
+  context: AudioContext;
+}
 
 /**
  * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and optionally converts the audio to Buffers
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
- *
- * @param {Object} [opts] options
- * @param {MediaStream} [opts.stream] https://developer.mozilla.org/en-US/docs/Web/API/MediaStream - for iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
- * @param {Boolean} [opts.objectMode=false] Puts the stream into ObjectMode where it emits AudioBuffers instead of Buffers - see https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
- * @param {Number|null} [opts.bufferSize=null] https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
- * @param {AudioContext} [opts.context] - AudioContext - will be automatically created if not passed in
- * @constructor
  */
 function MicrophoneStream(opts) {
   // backwards compatibility - passing in the Stream here will generally not work on iOS 11 Safari
@@ -152,7 +171,6 @@ function MicrophoneStream(opts) {
     });
   });
 }
-util.inherits(MicrophoneStream, Readable);
 
 MicrophoneStream.prototype._read = function (/* bytes */) {
   // no-op, (flow-control doesn't really work on live audio)
