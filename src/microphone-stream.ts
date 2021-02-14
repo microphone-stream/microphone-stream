@@ -1,7 +1,7 @@
 import Readable from "readable-stream";
 // some versions of the buffer browser lib don't support Buffer.from (such as the one included by the
 // current version of express-browserify)
-var bufferFrom = require("buffer-from");
+import bufferFrom from "buffer-from";
 
 export type MicrophoneStreamOptions = {
   /**
