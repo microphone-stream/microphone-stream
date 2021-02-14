@@ -48,6 +48,7 @@
     "readable-stream": "^3.6.0"
   },
   "devDependencies": {
+    "@types/readable-stream": "^2.3.9",
     "browserify": "^17.0.0",
     "eslint": "^7.19.0",
     "eslint-config-google": "^0.14.0",

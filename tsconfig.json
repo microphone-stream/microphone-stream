@@ -4,6 +4,7 @@
   "compilerOptions": {
     "alwaysStrict": true,
     "declaration": true,
+    "esModuleInterop": true,
     "rootDir": "src",
     "outDir": "dist",
     "declarationDir": "types"

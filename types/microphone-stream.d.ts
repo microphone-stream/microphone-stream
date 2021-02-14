@@ -1,5 +1,5 @@
 /// <reference types="node" />
-declare var Readable: any;
+import Readable from "readable-stream";
 export declare type MicrophoneStreamOptions = {
     /**
      * Represents a stream of media content. A stream consists of several tracks such as video or audio tracks.
@@ -78,4 +78,3 @@ export declare class MicrophoneStream extends Readable {
      */
     static toRaw(chunk: Buffer): Float32Array;
 }
-export {};
