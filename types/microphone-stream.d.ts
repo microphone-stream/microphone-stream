@@ -43,17 +43,19 @@ export declare class MicrophoneStream extends Readable {
      *
      * This was separated from the constructor to enable better compatibility with Safari on iOS 11.
      *
-     * Typically the stream is only available asynchronously, but the context must be created or resumed directly in
-     * response to a user's tap on iOS.
+     * Typically the stream is only available asynchronously, but the context must be created or
+     * resumed directly in response to a user's tap on iOS.
      *
      * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
      * @type {function(MediaStream): void}
      */
     setStream(stream: MediaStream): void;
     /**
-     * Temporarily stop emitting new data. Audio data recieved from the microphone after this will be dropped.
+     * Temporarily stop emitting new data. Audio data recieved from the microphone
+     * after this will be dropped.
      *
-     * Note: the underlying Stream interface has a .pause() API that causes new data to be buffered rather than dropped.
+     * Note: the underlying Stream interface has a .pause() API that causes new data
+     * to bebuffered rather than dropped.
      */
     pauseRecording(): void;
     /**

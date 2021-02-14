@@ -46,8 +46,8 @@ export class MicrophoneStream extends Readable {
     super();
     const { stream, objectMode, bufferSize, context } = options;
 
-    // "It is recommended for authors to not specify this buffer size and allow the implementation to pick a good
-    // buffer size to balance between latency and audio quality."
+    // "It is recommended for authors to not specify this buffer size and allow the implementation
+    // to pick a good buffer size to balance between latency and audio quality."
     // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
     // however, webkitAudioContext (safari) requires it to be set'
     // Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384
@@ -96,13 +96,13 @@ export class MicrophoneStream extends Readable {
    *
    * This was separated from the constructor to enable better compatibility with Safari on iOS 11.
    *
-   * Typically the stream is only available asynchronously, but the context must be created or resumed directly in
-   * response to a user's tap on iOS.
+   * Typically the stream is only available asynchronously, but the context must be created or
+   * resumed directly in response to a user's tap on iOS.
    *
    * @param {MediaStream} stream https://developer.mozilla.org/en-US/docs/Web/API/MediaStream
    * @type {function(MediaStream): void}
    */
-  public setStream(stream: MediaStream) {
+  public setStream(stream: MediaStream): void {
     this.stream = stream;
     this.audioInput = this.context.createMediaStreamSource(stream);
     this.audioInput.connect(this.recorder);
@@ -126,9 +126,11 @@ export class MicrophoneStream extends Readable {
   }
 
   /**
-   * Temporarily stop emitting new data. Audio data recieved from the microphone after this will be dropped.
+   * Temporarily stop emitting new data. Audio data recieved from the microphone
+   * after this will be dropped.
    *
-   * Note: the underlying Stream interface has a .pause() API that causes new data to be buffered rather than dropped.
+   * Note: the underlying Stream interface has a .pause() API that causes new data
+   * to bebuffered rather than dropped.
    */
   public pauseRecording() {
     this.recording = false;
@@ -182,7 +184,7 @@ export class MicrophoneStream extends Readable {
    * @param {Buffer} chunk node-style buffer of audio data from a 'data' event or read() call
    * @return {Float32Array} raw 32-bit float data view of audio data
    */
-  public static toRaw(chunk: Buffer) {
+  public static toRaw(chunk: Buffer): Float32Array {
     return new Float32Array(chunk.buffer);
   }
 }
