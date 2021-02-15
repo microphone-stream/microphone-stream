@@ -3,7 +3,7 @@
 const path = require("path");
 
 module.exports = function (config) {
-  const cfg = {
+  config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "",
 
@@ -12,7 +12,7 @@ module.exports = function (config) {
     frameworks: ["mocha", "karma-typescript"],
 
     // list of files / patterns to load in the browser
-    files: ["test/spec.ts"],
+    files: ["src/microphone-stream.spec.ts"],
 
     // list of files to exclude
     exclude: [],
@@ -21,11 +21,6 @@ module.exports = function (config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       "test/spec.ts": ["karma-typescript"],
-    },
-
-    browserify: {
-      debug: true,
-      transform: [],
     },
 
     // test results reporter to use
@@ -72,7 +67,9 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
-  };
 
-  config.set(cfg);
+    karmaTypescriptConfig: {
+      tsconfig: "./tsconfig.json",
+    },
+  });
 };
