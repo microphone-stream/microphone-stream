@@ -3,6 +3,7 @@
   "exclude": ["src/**/*.spec.ts"],
 
   "compilerOptions": {
+    "target": "ES5",
     "alwaysStrict": true,
     "declaration": true,
     "esModuleInterop": true,

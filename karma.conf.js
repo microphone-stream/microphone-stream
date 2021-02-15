@@ -70,6 +70,7 @@ module.exports = function (config) {
 
     karmaTypescriptConfig: {
       compilerOptions: {
+        target: "ES5",
         alwaysStrict: true,
         declaration: true,
         esModuleInterop: true,
