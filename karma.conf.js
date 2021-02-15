@@ -12,7 +12,7 @@ module.exports = function (config) {
     frameworks: ["mocha", "karma-typescript"],
 
     // list of files / patterns to load in the browser
-    files: [{ pattern: "src/microphone-stream.spec.ts", type: "js" }],
+    files: ["src/**/*.ts"],
 
     // list of files to exclude
     exclude: [],
@@ -20,7 +20,7 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "test/spec.ts": ["karma-typescript"],
+      "src/**/*.ts": ["karma-typescript"],
     },
 
     // test results reporter to use
@@ -69,7 +69,14 @@ module.exports = function (config) {
     concurrency: Infinity,
 
     karmaTypescriptConfig: {
-      tsconfig: "./tsconfig.json",
+      compilerOptions: {
+        alwaysStrict: true,
+        declaration: true,
+        esModuleInterop: true,
+        rootDir: "src",
+        outDir: "dist",
+        declarationDir: "types",
+      },
     },
 
     mime: {
