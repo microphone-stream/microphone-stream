@@ -57,7 +57,7 @@ export default class MicrophoneStream extends Readable {
    * @constructor
    */
   constructor(opts: MicrophoneStreamOptions = { objectMode: false }) {
-    super();
+    super({ objectMode: opts.objectMode });
     const { stream, objectMode, bufferSize, context } = opts;
 
     this.objectMode = objectMode;
