@@ -81,7 +81,7 @@ describe("MicrophoneStream", function () {
     it("should expose internal audioInput", function (done) {
       getUserMedia({ audio: true })
         .then(function (stream) {
-          var micStream = new MicrophoneStream(stream);
+          var micStream = new MicrophoneStream({ stream });
           assert(
             micStream.audioInput instanceof MediaStreamAudioSourceNode,
             "should return a MediaStreamAudioSourceNode"
@@ -99,7 +99,7 @@ describe("MicrophoneStream", function () {
 
       getUserMedia({ audio: true }).then(function (stream) {
         assert(getMediaTrackState(stream) === "live");
-        var micStream = new MicrophoneStream(stream);
+        var micStream = new MicrophoneStream({ stream });
         micStream.stop();
         assert(getMediaTrackState(stream) === "ended");
         done();
@@ -110,7 +110,7 @@ describe("MicrophoneStream", function () {
       getUserMedia({ audio: true })
         .then(function (stream) {
           var hasNonZero = false;
-          var micStream = new MicrophoneStream(stream, { objectMode: true });
+          var micStream = new MicrophoneStream({ stream, objectMode: true });
           micStream
             .on("error", done)
             .on("data", function (audioBuffer) {
@@ -139,7 +139,7 @@ describe("MicrophoneStream", function () {
       getUserMedia({ audio: true })
         .then(function (stream) {
           var hasNonZero = false;
-          var micStream = new MicrophoneStream(stream);
+          var micStream = new MicrophoneStream({ stream });
           micStream
             .on("error", done)
             .on("data", function (chunk) {
