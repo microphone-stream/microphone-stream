@@ -7,7 +7,7 @@ describe("MicrophoneStream", function () {
   it("should capture audio and emit data events with buffers when in the default binary mode", function (done) {
     getUserMedia({ audio: true })
       .then(function (stream) {
-        var micStream = new MicrophoneStream(stream);
+        var micStream = new MicrophoneStream({ stream });
         micStream.on("error", done).on("data", function (chunk) {
           assert(chunk instanceof Buffer);
           done();
@@ -19,7 +19,7 @@ describe("MicrophoneStream", function () {
   it("should capture audio and emit AudioBuffers when in object mode", function (done) {
     getUserMedia({ audio: true })
       .then(function (stream) {
-        var micStream = new MicrophoneStream(stream, { objectMode: true });
+        var micStream = new MicrophoneStream({ stream, objectMode: true });
         micStream.on("error", done).on("data", function (data) {
           assert(data instanceof AudioBuffer);
           done();
@@ -31,7 +31,7 @@ describe("MicrophoneStream", function () {
   it("should emit a format event", function (done) {
     getUserMedia({ audio: true })
       .then(function (stream) {
-        var micStream = new MicrophoneStream(stream);
+        var micStream = new MicrophoneStream({ stream });
         micStream.on("error", done).on("format", function (format) {
           assert(format);
           assert.equal(format.channels, 1);
@@ -51,12 +51,13 @@ describe("MicrophoneStream", function () {
         .then(function (stream) {
           var closed = false;
           var ended = false;
+          // eslint-disable-next-line require-jsdoc
           function check() {
             if (closed && ended) {
               done();
             }
           }
-          var micStream = new MicrophoneStream(stream);
+          var micStream = new MicrophoneStream({ stream });
           micStream
             .on("error", done)
             .on("close", function () {
@@ -67,6 +68,7 @@ describe("MicrophoneStream", function () {
               ended = true;
               check();
             })
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             .on("data", function () {}) // put it into flowing mode or end will never fire
             .once("data", function () {
               // wait for the first bit of data before calling stop
@@ -90,6 +92,7 @@ describe("MicrophoneStream", function () {
     });
 
     it("should attempt to stop the tracks of the user media stream", function (done) {
+      // eslint-disable-next-line require-jsdoc
       function getMediaTrackState(stream) {
         return stream.getTracks()[0].readyState;
       }
@@ -104,7 +107,6 @@ describe("MicrophoneStream", function () {
     });
 
     it("should capture audio and emit AudioBuffers with non-0 data when in object mode", function (done) {
-      this.timeout(3000);
       getUserMedia({ audio: true })
         .then(function (stream) {
           var hasNonZero = false;
@@ -131,10 +133,9 @@ describe("MicrophoneStream", function () {
           setTimeout(micStream.stop.bind(micStream), 1000);
         })
         .catch(done);
-    });
+    }).timeout(3000);
 
     it("should capture audio and emit buffers with non-0 data when in binary mode", function (done) {
-      this.timeout(3000);
       getUserMedia({ audio: true })
         .then(function (stream) {
           var hasNonZero = false;
@@ -160,7 +161,7 @@ describe("MicrophoneStream", function () {
           setTimeout(micStream.stop.bind(micStream), 1000);
         })
         .catch(done);
-    });
+    }).timeout(3000);
   });
 
   describe("toRaw", function () {
