@@ -69,14 +69,10 @@ module.exports = function (config) {
     concurrency: Infinity,
 
     karmaTypescriptConfig: {
-      compilerOptions: {
-        target: "ES5",
-        alwaysStrict: true,
-        declaration: true,
-        esModuleInterop: true,
-        rootDir: "src",
-        outDir: "dist",
-        declarationDir: "types",
+      tsconfig: "./tsconfig.json",
+      exclude: {
+        mode: "replace",
+        values: [],
       },
     },
 
