@@ -7,7 +7,7 @@ describe("MicrophoneStream", function () {
   it("should capture audio and emit data events with buffers when in the default binary mode", function (done) {
     getUserMedia({ audio: true })
       .then(function (stream) {
-        var micStream = new MicrophoneStream({ stream });
+        const micStream = new MicrophoneStream({ stream });
         micStream.on("error", done).on("data", function (chunk) {
           assert(chunk instanceof Buffer);
           done();
@@ -19,7 +19,7 @@ describe("MicrophoneStream", function () {
   it("should capture audio and emit AudioBuffers when in object mode", function (done) {
     getUserMedia({ audio: true })
       .then(function (stream) {
-        var micStream = new MicrophoneStream({ stream, objectMode: true });
+        const micStream = new MicrophoneStream({ stream, objectMode: true });
         micStream.on("error", done).on("data", function (data) {
           assert(data instanceof AudioBuffer);
           done();
@@ -31,7 +31,7 @@ describe("MicrophoneStream", function () {
   it("should emit a format event", function (done) {
     getUserMedia({ audio: true })
       .then(function (stream) {
-        var micStream = new MicrophoneStream({ stream });
+        const micStream = new MicrophoneStream({ stream });
         micStream.on("error", done).on("format", function (format) {
           assert(format);
           assert.equal(format.channels, 1);
@@ -49,15 +49,15 @@ describe("MicrophoneStream", function () {
     it("should emit close and end events", function (done) {
       getUserMedia({ audio: true })
         .then(function (stream) {
-          var closed = false;
-          var ended = false;
+          let closed = false;
+          let ended = false;
           // eslint-disable-next-line require-jsdoc
           function check() {
             if (closed && ended) {
               done();
             }
           }
-          var micStream = new MicrophoneStream({ stream });
+          const micStream = new MicrophoneStream({ stream });
           micStream
             .on("error", done)
             .on("close", function () {
@@ -81,7 +81,7 @@ describe("MicrophoneStream", function () {
     it("should expose internal audioInput", function (done) {
       getUserMedia({ audio: true })
         .then(function (stream) {
-          var micStream = new MicrophoneStream({ stream });
+          const micStream = new MicrophoneStream({ stream });
           assert(
             micStream.audioInput instanceof MediaStreamAudioSourceNode,
             "should return a MediaStreamAudioSourceNode"
@@ -99,7 +99,7 @@ describe("MicrophoneStream", function () {
 
       getUserMedia({ audio: true }).then(function (stream) {
         assert(getMediaTrackState(stream) === "live");
-        var micStream = new MicrophoneStream({ stream });
+        const micStream = new MicrophoneStream({ stream });
         micStream.stop();
         assert(getMediaTrackState(stream) === "ended");
         done();
@@ -109,8 +109,8 @@ describe("MicrophoneStream", function () {
     it("should capture audio and emit AudioBuffers with non-0 data when in object mode", function (done) {
       getUserMedia({ audio: true })
         .then(function (stream) {
-          var hasNonZero = false;
-          var micStream = new MicrophoneStream({ stream, objectMode: true });
+          let hasNonZero = false;
+          const micStream = new MicrophoneStream({ stream, objectMode: true });
           micStream
             .on("error", done)
             .on("data", function (audioBuffer) {
@@ -118,8 +118,8 @@ describe("MicrophoneStream", function () {
                 micStream.stop();
                 return;
               }
-              var data = audioBuffer.getChannelData(0); // Float32Array
-              for (var len = data.length, i = 0; i < len; i++) {
+              const data = audioBuffer.getChannelData(0); // Float32Array
+              for (let i = 0; i < data.length; i++) {
                 if (data[i] !== 0) {
                   hasNonZero = true;
                   break;
@@ -138,8 +138,8 @@ describe("MicrophoneStream", function () {
     it("should capture audio and emit buffers with non-0 data when in binary mode", function (done) {
       getUserMedia({ audio: true })
         .then(function (stream) {
-          var hasNonZero = false;
-          var micStream = new MicrophoneStream({ stream });
+          let hasNonZero = false;
+          const micStream = new MicrophoneStream({ stream });
           micStream
             .on("error", done)
             .on("data", function (chunk) {
@@ -147,7 +147,7 @@ describe("MicrophoneStream", function () {
                 micStream.stop();
                 return;
               }
-              for (var len = chunk.length, i = 0; i < len; i++) {
+              for (let i = 0; i < chunk.length; i++) {
                 if (chunk[i] !== 0) {
                   hasNonZero = true;
                   break;
@@ -166,8 +166,8 @@ describe("MicrophoneStream", function () {
 
   describe("toRaw", function () {
     it("should convert fro a buffer to a Float32Array without copying data", function () {
-      var source = new Buffer([0, 0, 0x80, 0x3f]);
-      var actual = MicrophoneStream.toRaw(source);
+      const source = new Buffer([0, 0, 0x80, 0x3f]);
+      const actual = MicrophoneStream.toRaw(source);
       assert(actual instanceof Float32Array, "it should return a Float32Array");
       assert.equal(actual.length, 1, "the converted Float32Array length");
       assert.equal(actual[0], 1, "converted Float32Array data value");
