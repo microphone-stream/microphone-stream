@@ -34,7 +34,7 @@ export type MicrophoneStreamOptions = {
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
  */
-export class MicrophoneStream extends Readable {
+export default class MicrophoneStream extends Readable {
   public context: AudioContext;
   public audioInput: MediaStreamAudioSourceNode = null;
   private stream: MediaStream;

@@ -1,13 +1,7 @@
-"use strict";
+import assert from "assert";
 
-var assert = require("assert");
-
-var getUserMedia = require("get-user-media-promise");
-var MicrophoneStream = require("../src/microphone-stream.js");
-
-// var expect = require('expect.js');
-
-// var expectedAudio = fs.readFilesync('./resources/')
+import getUserMedia from "get-user-media-promise";
+import MicrophoneStream from "../dist/microphone-stream.js";
 
 describe("MicrophoneStream", function () {
   it("should capture audio and emit data events with buffers when in the default binary mode", function (done) {
