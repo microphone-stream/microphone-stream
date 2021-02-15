@@ -10,8 +10,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint .",
-    "autofix": "eslint . --fix",
+    "lint": "eslint src/**/*.ts",
+    "autofix": "eslint --fix src/**/*.ts",
     "test-integration": "karma start --single-run",
     "pretest": "npm run build",
     "test": "npm run lint && npm run test-integration",
