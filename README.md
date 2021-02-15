@@ -3,7 +3,6 @@
 [![npm-version](https://img.shields.io/npm/v/microphone-stream.svg)](https://www.npmjs.com/package/microphone-stream)
 [![Build Status](https://travis-ci.org/saebekassebil/microphone-stream.svg?branch=master)](https://travis-ci.org/saebekassebil/microphone-stream)
 
-
 If you just want to get some audio data from your microphone, this is what you're looking for!
 
 Converts a [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) (from [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia)) into a standard Node.js-style stream for easy `pipe()`ing.
@@ -13,18 +12,17 @@ Note: This only works in a [limited set of browsers](http://caniuse.com/#search=
 and then only for [https or localhost in Chrome](https://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features).
 It does not work in Node.js.
 
-
 ### Example
 
 ```js
-var getUserMedia = require('get-user-media-promise');
-var MicrophoneStream = require('microphone-stream');
+const getUserMedia = require('get-user-media-promise');
+const MicrophoneStream = require('microphone-stream');
 
 document.getElementById('my-start-button').onclick = function() {
 
   // note: for iOS Safari, the constructor must be called in response to a tap, or else the AudioContext will remain
   // suspended and will not provide any audio data.
-  var micStream = new MicrophoneStream();
+  const micStream = new MicrophoneStream();
 
   getUserMedia({ video: false, audio: true })
     .then(function(stream) {
@@ -37,7 +35,7 @@ document.getElementById('my-start-button').onclick = function() {
   micStream.on('data', function(chunk) {
     // Optionally convert the Buffer back into a Float32Array
     // (This actually just creates a new DataView - the underlying audio data is not copied or modified.)
-    var raw = MicrophoneStream.toRaw(chunk)
+    const raw = MicrophoneStream.toRaw(chunk)
     //...
 
     // note: if you set options.objectMode=true, the `data` event will output AudioBuffers instead of Buffers
@@ -68,6 +66,7 @@ document.getElementById('my-start-button').onclick = function() {
 ### `new MicrophoneStream(opts)` -> [Readable Stream](https://nodejs.org/api/stream.html)
 
 Where `opts` is an option object, with defaults:
+
 ```js
 {
   stream: null,
@@ -77,15 +76,14 @@ Where `opts` is an option object, with defaults:
 }
 ```
 
-* **stream**: [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) instance. For iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
+- **stream**: [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) instance. For iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
 
-* **bufferSize**: Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384. From [Mozilla's Docs](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor):
- > It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size 
- > to balance between latency and audio quality.
-  
-* **objectMode**: if true, stream enters [objectMode] and emits AudioBuffers instead of Buffers. This has implications for `pipe()`'ing to other streams.
+- **bufferSize**: Possible values: null, 256, 512, 1024, 2048, 4096, 8192, 16384. From [Mozilla's Docs](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor):
+  > It is recommended for authors to not specify this buffer size and allow the implementation to pick a good buffer size
+  > to balance between latency and audio quality.
+- **objectMode**: if true, stream enters [objectMode] and emits AudioBuffers instead of Buffers. This has implications for `pipe()`'ing to other streams.
 
-* **context** is the AudioContext instance. If omitted, one will be created automatically.
+- **context** is the AudioContext instance. If omitted, one will be created automatically.
 
 #### `.setStream(mediaStream)`
 
@@ -126,9 +124,9 @@ One-time event with details of the audio format. Example:
 ```
 
 ## `MicrophoneStream.toRaw(Buffer) -> Float32Array`
-  
+
 Converts a `Buffer` (from a `data` event or from calling `.read()`) back to the original Float32Array DataView format. (The underlying audio data is not copied or modified.)
 
-[AudioBuffer]: https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
-[Buffer]: https://nodejs.org/api/buffer.html
-[objectMode]: https://nodejs.org/api/stream.html#stream_object_mode
+[audiobuffer]: https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+[buffer]: https://nodejs.org/api/buffer.html
+[objectmode]: https://nodejs.org/api/stream.html#stream_object_mode
