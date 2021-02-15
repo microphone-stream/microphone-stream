@@ -12,7 +12,7 @@ module.exports = function (config) {
     frameworks: ["mocha", "karma-typescript"],
 
     // list of files / patterns to load in the browser
-    files: ["src/microphone-stream.spec.ts"],
+    files: [{ pattern: "src/microphone-stream.spec.ts", type: "js" }],
 
     // list of files to exclude
     exclude: [],
