@@ -6,7 +6,7 @@
   "types": "types/microphone-stream.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saebekassebil/microphone-stream.git"
+    "url": "git+https://github.com/microphone-stream/microphone-stream/.git"
   },
   "scripts": {
     "build": "tsc",
@@ -36,13 +36,17 @@
     {
       "name": "Nathan Friedly",
       "url": "http://nfriedly.com"
+    },
+    {
+      "name": "Trivikram Kamat",
+      "url": "https://twitter.com/trivikram"
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/saebekassebil/microphone-stream/issues"
+    "url": "https://github.com/microphone-stream/microphone-stream/issues"
   },
-  "homepage": "https://github.com/saebekassebil/microphone-stream#readme",
+  "homepage": "https://github.com/microphone-stream/microphone-stream#readme",
   "dependencies": {
     "buffer-from": "^1.1.1",
     "readable-stream": "^3.6.0"
