@@ -29,7 +29,8 @@ export type MicrophoneStreamOptions = {
 };
 
 /**
- * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and optionally converts the audio to Buffers
+ * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream
+ * and optionally converts the audio to Buffers
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
  */
@@ -40,11 +41,26 @@ export class MicrophoneStream extends Readable {
   context: AudioContext;
   recorder: ScriptProcessorNode;
   audioInput: MediaStreamAudioSourceNode = null;
-  recording: boolean = true;
+  recording = true;
 
-  constructor(options: MicrophoneStreamOptions = { objectMode: false }) {
+  /**
+   * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream
+   * and optionally converts the audio to Buffers
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
+   *
+   * @param {Object} [opts] options
+   * @param {MediaStream} [opts.stream] https://developer.mozilla.org/en-US/docs/Web/API/MediaStream - for iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
+   * @param {Boolean} [opts.objectMode=false] Puts the stream into ObjectMode where it emits AudioBuffers instead of Buffers - see https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+   * @param {Number|null} [opts.bufferSize=null] https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+   * @param {AudioContext} [opts.context] - AudioContext - will be automatically created if not passed in
+   * @constructor
+   */
+  constructor(opts: MicrophoneStreamOptions = { objectMode: false }) {
     super();
-    const { stream, objectMode, bufferSize, context } = options;
+    const { stream, objectMode, bufferSize, context } = opts;
+
+    this.objectMode = objectMode;
 
     // "It is recommended for authors to not specify this buffer size and allow the implementation
     // to pick a good buffer size to balance between latency and audio quality."
@@ -54,7 +70,7 @@ export class MicrophoneStream extends Readable {
     this.bufferSize =
       bufferSize || typeof window.AudioContext === "undefined" ? 4096 : null;
 
-    // @ts-ignores-error Property 'webkitAudioContext' does not exist on type 'Window & typeof globalThis'
+    // @ts-expect-error Property 'webkitAudioContext' does not exist on type 'Window & typeof globalThis'
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     this.context = context || new AudioContext();
 
@@ -132,14 +148,14 @@ export class MicrophoneStream extends Readable {
    * Note: the underlying Stream interface has a .pause() API that causes new data
    * to bebuffered rather than dropped.
    */
-  public pauseRecording() {
+  public pauseRecording(): void {
     this.recording = false;
   }
 
   /**
    * Resume emitting new audio data after pauseRecording() was called.
    */
-  public playRecording() {
+  public playRecording(): void {
     this.recording = true;
   }
 
@@ -148,7 +164,7 @@ export class MicrophoneStream extends Readable {
    *
    * Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
    */
-  public stop() {
+  public stop(): void {
     if (this.context.state === "closed") {
       return;
     }
@@ -171,7 +187,10 @@ export class MicrophoneStream extends Readable {
     this.emit("close");
   }
 
-  public _read(/* bytes */) {
+  /**
+   * no-op, (flow-control doesn't really work on live audio)
+   */
+  public _read(/* bytes */): void {
     // no-op, (flow-control doesn't really work on live audio)
   }
 

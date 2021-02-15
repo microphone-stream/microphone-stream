@@ -25,7 +25,8 @@ export declare type MicrophoneStreamOptions = {
     context?: AudioContext;
 };
 /**
- * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream and optionally converts the audio to Buffers
+ * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream
+ * and optionally converts the audio to Buffers
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
  */
@@ -37,7 +38,20 @@ export declare class MicrophoneStream extends Readable {
     recorder: ScriptProcessorNode;
     audioInput: MediaStreamAudioSourceNode;
     recording: boolean;
-    constructor(options?: MicrophoneStreamOptions);
+    /**
+     * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream
+     * and optionally converts the audio to Buffers
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
+     *
+     * @param {Object} [opts] options
+     * @param {MediaStream} [opts.stream] https://developer.mozilla.org/en-US/docs/Web/API/MediaStream - for iOS compatibility, it is recommended that you create the MicrophoneStream instance in response to the tap - before you have a MediaStream, and then later call setStream() with the MediaStream.
+     * @param {Boolean} [opts.objectMode=false] Puts the stream into ObjectMode where it emits AudioBuffers instead of Buffers - see https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
+     * @param {Number|null} [opts.bufferSize=null] https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
+     * @param {AudioContext} [opts.context] - AudioContext - will be automatically created if not passed in
+     * @constructor
+     */
+    constructor(opts?: MicrophoneStreamOptions);
     /**
      * Sets the MediaStream.
      *
@@ -68,6 +82,9 @@ export declare class MicrophoneStream extends Readable {
      * Note: Some versions of Firefox leave the recording icon in place after recording has stopped.
      */
     stop(): void;
+    /**
+     * no-op, (flow-control doesn't really work on live audio)
+     */
     _read(): void;
     /**
      * Converts a Buffer back into the raw Float32Array format that browsers use.
