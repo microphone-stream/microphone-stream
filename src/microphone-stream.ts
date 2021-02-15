@@ -35,13 +35,13 @@ export type MicrophoneStreamOptions = {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia
  */
 export class MicrophoneStream extends Readable {
-  stream: MediaStream;
-  objectMode: boolean;
-  bufferSize: number;
-  context: AudioContext;
-  recorder: ScriptProcessorNode;
-  audioInput: MediaStreamAudioSourceNode = null;
-  recording = true;
+  public context: AudioContext;
+  public audioInput: MediaStreamAudioSourceNode = null;
+  private stream: MediaStream;
+  private objectMode: boolean;
+  private bufferSize: number;
+  private recorder: ScriptProcessorNode;
+  private recording = true;
 
   /**
    * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream
