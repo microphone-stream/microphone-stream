@@ -82,14 +82,14 @@ export default class MicrophoneStream extends Readable {
     // but chrome is buggy and won't give us any audio without one.
     const outputChannels = 1;
 
-    this.recorder = context.createScriptProcessor(
+    this.recorder = this.context.createScriptProcessor(
       bufferSize,
       inputChannels,
       outputChannels
     );
 
     // Other half of workaround for chrome bugs.
-    this.recorder.connect(context.destination);
+    this.recorder.connect(this.context.destination);
 
     if (stream) {
       this.setStream(stream);
