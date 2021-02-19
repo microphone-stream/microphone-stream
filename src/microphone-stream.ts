@@ -95,7 +95,7 @@ export default class MicrophoneStream extends Readable {
       this.setStream(stream);
     }
 
-    const emitFormat = function () {
+    process.nextTick(() => {
       this.emit("format", {
         channels: 1,
         bitDepth: 32,
@@ -103,8 +103,7 @@ export default class MicrophoneStream extends Readable {
         signed: true,
         float: true,
       });
-    }.bind(this);
-    process.nextTick(emitFormat);
+    });
   }
 
   /**
@@ -128,7 +127,7 @@ export default class MicrophoneStream extends Readable {
      * @see https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode/onaudioprocess
      * @param {AudioProcessingEvent} e https://developer.mozilla.org/en-US/docs/Web/API/AudioProcessingEvent
      */
-    const recorderProcess = function (e: AudioProcessingEvent) {
+    const recorderProcess = (e: AudioProcessingEvent) => {
       // onaudioprocess can be called at least once after we've stopped
       if (this.recording) {
         this.push(
@@ -137,7 +136,7 @@ export default class MicrophoneStream extends Readable {
             : bufferFrom(e.inputBuffer.getChannelData(0).buffer)
         );
       }
-    }.bind(this);
+    };
     this.recorder.onaudioprocess = recorderProcess;
   }
 
