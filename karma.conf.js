@@ -1,18 +1,18 @@
 // Karma configuration
 // Generated on Fri Jan 15 2016 13:36:31 GMT-0500 (EST)
-var path = require("path");
+const path = require("path");
 
 module.exports = function (config) {
-  var cfg = {
+  config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "",
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ["mocha", "browserify"],
+    frameworks: ["mocha", "karma-typescript"],
 
     // list of files / patterns to load in the browser
-    files: ["test/spec.js"],
+    files: ["src/**/*.ts"],
 
     // list of files to exclude
     exclude: [],
@@ -20,18 +20,13 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "test/spec.js": ["browserify"],
-    },
-
-    browserify: {
-      debug: true,
-      transform: [],
+      "src/**/*.ts": ["karma-typescript"],
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["progress"],
+    reporters: ["progress", "karma-typescript"],
 
     // web server port
     port: 9876,
@@ -72,7 +67,17 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
-  };
 
-  config.set(cfg);
+    karmaTypescriptConfig: {
+      tsconfig: "./tsconfig.json",
+      exclude: {
+        mode: "replace",
+        values: [],
+      },
+    },
+
+    mime: {
+      "text/x-typescript": ["ts"],
+    },
+  });
 };

@@ -1,6 +1,11 @@
 module.exports = {
-  plugins: ["prettier"],
-  extends: ["google", "prettier"],
+  parser: "@typescript-eslint/parser",
+  extends: [
+    "plugin:@typescript-eslint/recommended",
+    "google",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
+  ],
   env: {
     browser: true,
     node: true,
