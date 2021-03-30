@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+  <head> </head>
+
+  <body>
+    <h1>AudioWorklet Transform Stream</h1>
+    <script type="worklet">
+      class AudioWorkletStream extends AudioWorkletProcessor {
+        constructor(options) {
+          super();
+          console.log(this);
+          this.port.onmessage = e => {
+            this.writable = e.data;
+            this.writer = this.writable.getWriter();
+            this.port.postMessage('stream')
+          };
+        }
+        process(inputs, outputs) {
+          // convert to Int16Array, UintArray here
+          const channels = inputs.flat().reduce((f32, channel, index) => (f32.set(channel, !index ? index : 128), f32), new Float32Array(256));
+          this.writer.write(channels);
+          return true;
+        }
+      };
+      registerProcessor(
+        'audio-worklet-stream',
+        AudioWorkletStream
+      );
+    </script>
+    <script>
+      document.querySelector('h1').onclick = async () => {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        console.log(mediaStream);
+        const worklet = URL.createObjectURL(
+          new Blob(
+            [document.querySelector('script[type=worklet]').textContent],
+            {
+              type: 'text/javascript',
+            }
+          )
+        );
+        const ac = new AudioContext();
+        const source = new MediaStreamAudioSourceNode(ac, { mediaStream });
+        const { readable, writable } = new TransformStream();
+        const reader = readable.getReader();
+        reader.read().then(function processAudioStream({ value, done }) {
+          if (done) return reader.closed; // Promise
+          // do stuff with value from AudioWorklet
+          console.log(
+            value instanceof Float32Array,
+            value.length,
+            value.every((float) => float === 0),
+            done
+          );
+          return reader.read().then(processAudioStream);
+        });
+        await ac.suspend();
+        await ac.audioWorklet.addModule(worklet);
+        const aw = new AudioWorkletNode(ac, 'audio-worklet-stream');
+        source.connect(aw);
+        aw.onprocessorerror = (e) => {
+          console.error(e);
+          console.trace();
+        };
+        aw.port.onmessage = async (e) => {
+          await ac.resume();
+        };
+        aw.port.postMessage(writable, [writable]);
+      };
+    </script>
+  </body>
+</html>
