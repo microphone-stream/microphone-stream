@@ -16,7 +16,7 @@ It does not work in Node.js.
 
 ```js
 const getUserMedia = require('get-user-media-promise');
-const MicrophoneStream = require('microphone-stream');
+const MicrophoneStream = require('microphone-stream').default;
 
 document.getElementById('my-start-button').onclick = function() {
 
