@@ -20,8 +20,8 @@ const MicrophoneStream = require('microphone-stream').default;
 
 document.getElementById('my-start-button').onclick = function() {
 
-  // note: for iOS Safari, the constructor must be called in response to a tap, or else the AudioContext will remain
-  // suspended and will not provide any audio data.
+  // Note: in most browsers, this constructor must be called in response to a click/tap, 
+  // or else the AudioContext will remain suspended and will not provide any audio data.
   const micStream = new MicrophoneStream();
 
   getUserMedia({ video: false, audio: true })
