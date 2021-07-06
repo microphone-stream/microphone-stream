@@ -95,7 +95,7 @@ export default class MicrophoneStream extends Readable {
       this.setStream(stream);
     }
 
-    process.nextTick(() => {
+    setTimeout(() => {
       this.emit("format", {
         channels: 1,
         bitDepth: 32,
@@ -103,7 +103,7 @@ export default class MicrophoneStream extends Readable {
         signed: true,
         float: true,
       });
-    });
+    }, 0);
   }
 
   /**
