@@ -1,7 +1,7 @@
 import assert from "assert";
 
 import getUserMedia from "get-user-media-promise";
-import MicrophoneStream from "../dist/microphone-stream.js";
+import MicrophoneStream from "../dist/cjs/microphone-stream.js";
 
 describe("MicrophoneStream", function () {
   it("should capture audio and emit data events with buffers when in the default binary mode", function (done) {

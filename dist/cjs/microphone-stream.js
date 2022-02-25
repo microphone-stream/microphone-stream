@@ -70,7 +70,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
         if (stream) {
             _this.setStream(stream);
         }
-        process.nextTick(function () {
+        setTimeout(function () {
             _this.emit("format", {
                 channels: 1,
                 bitDepth: 32,
@@ -78,7 +78,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
                 signed: true,
                 float: true,
             });
-        });
+        }, 0);
         return _this;
     }
     /**

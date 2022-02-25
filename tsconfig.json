@@ -3,12 +3,12 @@
   "exclude": ["src/**/*.spec.ts"],
 
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES2015",
+    "module": "ES2020",
     "alwaysStrict": true,
     "declaration": true,
     "esModuleInterop": true,
     "rootDir": "src",
-    "outDir": "dist",
-    "declarationDir": "types"
+    "outDir": "dist/esm"
   }
 }

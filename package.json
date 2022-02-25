@@ -2,14 +2,17 @@
   "name": "microphone-stream",
   "version": "6.0.1",
   "description": "A stream of raw audio data from the microphone for use in browsers with getUserMedia",
-  "main": "dist/microphone-stream.js",
+  "main": "dist/cjs/microphone-stream.js",
+  "module": "dist/esm/microphone-stream.js",
   "types": "types/microphone-stream.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/microphone-stream/microphone-stream/.git"
   },
   "scripts": {
-    "build": "tsc",
+    "cjs": "tsc -p tsconfig-cjs.json",
+    "esm": "tsc -p tsconfig.json",
+    "build": "npm run cjs && npm run esm",
     "lint": "eslint src/**/*.ts",
     "autofix": "eslint --fix src/**/*.ts",
     "test-integration": "karma start --single-run",
@@ -30,6 +33,9 @@
     "microphone",
     "stream",
     "record"
+  ],
+  "files": [
+    "dist"
   ],
   "author": "Jakob Miland <saebekassebil@gmail.com>",
   "contributors": [
