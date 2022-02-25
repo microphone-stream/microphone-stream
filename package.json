@@ -35,7 +35,8 @@
     "record"
   ],
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "author": "Jakob Miland <saebekassebil@gmail.com>",
   "contributors": [
