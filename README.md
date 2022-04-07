@@ -1,7 +1,7 @@
 # Node-style stream for getUserMedia
 
 [![npm-version](https://img.shields.io/npm/v/microphone-stream.svg)](https://www.npmjs.com/package/microphone-stream)
-[![Build Status](https://travis-ci.org/microphone-stream/microphone-stream.svg?branch=master)](https://travis-ci.org/microphone-stream/microphone-stream)
+[![Build Status](https://app.travis-ci.com/microphone-stream/microphone-stream.svg?branch=main)](https://app.travis-ci.com/microphone-stream/microphone-stream)
 
 If you just want to get some audio data from your microphone, this is what you're looking for!
 
