@@ -27,6 +27,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - uses: GabrielBB/xvfb-action@v1
+      if: ${{ matrix.os }} != windows-latest
       with:
         run: npm test
 
