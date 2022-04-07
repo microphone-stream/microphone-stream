@@ -3,18 +3,21 @@
 
 name: Node.js CI
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -26,3 +29,5 @@ jobs:
     - uses: GabrielBB/xvfb-action@v1
       with:
         run: npm test
+
+# Todo: job to publish to npm
