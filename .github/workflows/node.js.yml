@@ -16,7 +16,7 @@ jobs:
       matrix:
         node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest] # todo: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
