@@ -123,6 +123,8 @@ One-time event with details of the audio format. Example:
 }
 ```
 
+Note: Here is an example of [converting WebAudio data to L16 format](https://github.com/watson-developer-cloud/speech-javascript-sdk/blob/master/speech-to-text/webaudio-l16-stream.js#L153-L160). (This is the format most commonly used for the data portion of .wav files; see RFC 1890 section 4.4.8).
+
 ## `MicrophoneStream.toRaw(Buffer) -> Float32Array`
 
 Converts a `Buffer` (from a `data` event or from calling `.read()`) back to the original Float32Array DataView format. (The underlying audio data is not copied or modified.)
