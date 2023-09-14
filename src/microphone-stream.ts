@@ -85,7 +85,7 @@ export default class MicrophoneStream extends Readable {
     this.recorder = this.context.createScriptProcessor(
       bufferSize,
       inputChannels,
-      outputChannels
+      outputChannels,
     );
 
     // Other half of workaround for chrome bugs.
@@ -133,7 +133,7 @@ export default class MicrophoneStream extends Readable {
         this.push(
           this.objectMode
             ? e.inputBuffer
-            : bufferFrom(e.inputBuffer.getChannelData(0).buffer)
+            : bufferFrom(e.inputBuffer.getChannelData(0).buffer),
         );
       }
     };

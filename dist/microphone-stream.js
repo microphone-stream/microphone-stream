@@ -7,6 +7,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -70,7 +72,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
         if (stream) {
             _this.setStream(stream);
         }
-        process.nextTick(function () {
+        setTimeout(function () {
             _this.emit("format", {
                 channels: 1,
                 bitDepth: 32,
@@ -78,7 +80,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
                 signed: true,
                 float: true,
             });
-        });
+        }, 0);
         return _this;
     }
     /**
@@ -107,7 +109,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
             if (_this.recording) {
                 _this.push(_this.objectMode
                     ? e.inputBuffer
-                    : buffer_from_1.default(e.inputBuffer.getChannelData(0).buffer));
+                    : (0, buffer_from_1.default)(e.inputBuffer.getChannelData(0).buffer));
             }
         };
         this.recorder.onaudioprocess = recorderProcess;

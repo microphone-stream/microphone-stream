@@ -3,7 +3,6 @@ module.exports = {
   extends: [
     "plugin:@typescript-eslint/recommended",
     "google",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended",
   ],
   env: {
