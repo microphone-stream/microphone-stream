@@ -3,18 +3,13 @@
 
 name: Tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+on: [push, pull_request]
 
 jobs:
   build:
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [lts/*]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         os: [macos-latest, ubuntu-latest] # todo: windows-latest
     runs-on: ${{ matrix.os }}
