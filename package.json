@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/microphone-stream/microphone-stream#readme",
   "dependencies": {
-    "buffer-from": "^1.1.2",
+    "buffer": "^6.0.3",
     "readable-stream": "^4.4.2"
   },
   "devDependencies": {

@@ -1,7 +1,5 @@
 import { Readable } from "readable-stream";
-// some versions of the buffer browser lib don't support Buffer.from (such as the one included by the
-// current version of express-browserify)
-import bufferFrom from "buffer-from";
+import { Buffer } from "buffer";
 
 export type MicrophoneStreamOptions = {
   /**
@@ -133,7 +131,7 @@ export default class MicrophoneStream extends Readable {
         this.push(
           this.objectMode
             ? e.inputBuffer
-            : bufferFrom(e.inputBuffer.getChannelData(0).buffer),
+            : Buffer.from(e.inputBuffer.getChannelData(0).buffer),
         );
       }
     };
