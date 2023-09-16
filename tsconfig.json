@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "rootDir": "src",
     "outDir": "dist",
-    "declarationDir": "types"
+    "declarationDir": "types",
+    "moduleResolution": "node"
   }
 }

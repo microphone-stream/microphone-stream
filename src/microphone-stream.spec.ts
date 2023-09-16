@@ -84,7 +84,7 @@ describe("MicrophoneStream", function () {
           const micStream = new MicrophoneStream({ stream });
           assert(
             micStream.audioInput instanceof MediaStreamAudioSourceNode,
-            "should return a MediaStreamAudioSourceNode"
+            "should return a MediaStreamAudioSourceNode",
           );
           done();
         })
@@ -174,7 +174,7 @@ describe("MicrophoneStream", function () {
       assert.equal(
         actual.buffer,
         source.buffer,
-        "should have the same underlying buffer"
+        "should have the same underlying buffer",
       );
     });
   });

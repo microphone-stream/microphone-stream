@@ -7,19 +7,16 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var readable_stream_1 = require("readable-stream");
-// some versions of the buffer browser lib don't support Buffer.from (such as the one included by the
-// current version of express-browserify)
-var buffer_from_1 = __importDefault(require("buffer-from"));
+var buffer_1 = require("buffer");
 /**
  * Turns a MediaStream object (from getUserMedia) into a Node.js Readable stream
  * and optionally converts the audio to Buffers
@@ -70,7 +67,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
         if (stream) {
             _this.setStream(stream);
         }
-        process.nextTick(function () {
+        setTimeout(function () {
             _this.emit("format", {
                 channels: 1,
                 bitDepth: 32,
@@ -78,7 +75,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
                 signed: true,
                 float: true,
             });
-        });
+        }, 0);
         return _this;
     }
     /**
@@ -107,7 +104,7 @@ var MicrophoneStream = /** @class */ (function (_super) {
             if (_this.recording) {
                 _this.push(_this.objectMode
                     ? e.inputBuffer
-                    : buffer_from_1.default(e.inputBuffer.getChannelData(0).buffer));
+                    : buffer_1.Buffer.from(e.inputBuffer.getChannelData(0).buffer));
             }
         };
         this.recorder.onaudioprocess = recorderProcess;
