@@ -3,6 +3,8 @@
 [![npm-version](https://img.shields.io/npm/v/microphone-stream.svg)](https://www.npmjs.com/package/microphone-stream)
 [![Node.js CI](https://github.com/microphone-stream/microphone-stream/actions/workflows/node.js.yml/badge.svg)](https://github.com/microphone-stream/microphone-stream/actions/workflows/node.js.yml)
 
+⚠️ Not under active development! Feel free to continue using this project for as long as it's helpful, but don't expect any changes or improvements. The core of the library uses a now-deprecated API to extract audio data, and the unit tests also depend on a now-deprecated test runner.
+
 If you just want to get some audio data from your microphone, this is what you're looking for!
 
 Converts a [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) (from [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getUserMedia)) into a standard Node.js-style stream for easy `pipe()`ing.
